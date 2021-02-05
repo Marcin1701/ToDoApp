@@ -9,6 +9,11 @@
 	mvnw.cmd - odpowiednik na Win10 (mvnw.cmd - - version - wersja mavena (bez spacji między myślnikami))
 	-->
 
+	<!--
+	Jeżeli znamy nazwę zależności to wpisujemy
+	start.spring.io
+	-->
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -27,6 +32,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
