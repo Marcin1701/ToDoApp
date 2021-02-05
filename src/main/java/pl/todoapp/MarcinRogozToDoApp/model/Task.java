@@ -1,10 +1,8 @@
 package pl.todoapp.MarcinRogozToDoApp.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 // Klasa modelu Zadań
 @Entity                 // Encja w bazie danych
@@ -13,11 +11,24 @@ public class Task {
 
     // Wymagany klucz w bazie danych
     @Id
-    private int id;
-    // Nazwa inaczej w bazie, albo mapujemy pola albo na getterach
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // adnotacja która generuje automatycznie klucze
+    private int id; // Nadawane wartości proste
+    // Adnotacje walidujące javax.validation
+    @NotBlank(message  = "Tasks description must not be empty")                            // Nazwa inaczej w bazie, albo mapujemy pola albo na getterach
     @Column(name = "desc")
     private String description;
     private boolean done;
+
+    public Task() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
@@ -33,13 +44,5 @@ public class Task {
 
     public void setDone(boolean done) {
         this.done = done;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
