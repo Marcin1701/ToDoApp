@@ -1,0 +1,2 @@
+1. Static - HTML, JS, wszystko to co ma być zwrócone użytkownikowi
+2. Templates - szablon, który generuje JAVA
