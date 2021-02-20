@@ -3,7 +3,7 @@ package pl.todoapp.MarcinRogozToDoApp.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
+//import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +19,11 @@ import java.util.List;
 // Dodajemy kolejną warstwę między kontrolerem a repozytorium - np dla User Story
 // Czasami command handler uzywamy - kontroler dostaje komenty w metodach
 // Czasami używa repo a czasami zewnętrzną usługę
+
+// 1. (Interfejsy) (Clean architecture) Arhitektura portów i
+// adapterów - opóźniamy implementację ile się da - dopiero na końcu implementujemy
+// 2. Model jest sercem rozwiązania, encje które nie udostępniają getterów i setterów,
+// modelujemy serce architektury, czyli mamy w modelu metody np. opłaćZamówienie, zarezerwujLot
 
 // Wiążemy kontroler z istniejącym repozytorium
 @RestController // Adnotacja Springowa - Repozytorium i Kontroler skanuje klasy przy uruchamianiu - zarządza nimi

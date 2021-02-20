@@ -3,13 +3,15 @@ package pl.todoapp.MarcinRogozToDoApp;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
-import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
-import org.springframework.validation.Validator;
+//import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
+//import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
+//import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import javax.validation.Validator;
+
 @SpringBootApplication								  // Do walidacji danych
-public class MarcinRogozToDoAppApplication implements RepositoryRestConfigurer {
+public class MarcinRogozToDoAppApplication { // implements RepositoryRestConfigurer {
 
 	// Aby uruchomić budowanie aplikacji:
 	// 1. Maven - Package (Lifecycle) albo mvnw.cmd package (w konsoli)
@@ -30,6 +32,7 @@ public class MarcinRogozToDoAppApplication implements RepositoryRestConfigurer {
 	// Parametr validate listener - dodajemy walidator
 	// Reaguje na błędy usera podczas wysyłania żądania html
 	// Dzięki temu pojawia się informacja z adnotacji @NotBlank w Task
+	/*
 	@Override
 	public void configureValidatingRepositoryEventListener(final ValidatingRepositoryEventListener validatingListener) {
 		// Przed utworzeniem
@@ -37,4 +40,5 @@ public class MarcinRogozToDoAppApplication implements RepositoryRestConfigurer {
 		// Przed zapisem
 		validatingListener.addValidator("beforeSave", validator());
 	}
+	*/
 }
