@@ -2,6 +2,7 @@ package pl.todoapp.MarcinRogozToDoApp.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,10 @@ class TaskController {
     // Poszczególne requesty mają swoje dedykowane mappingi
     // Można skrótowo -> GetMapping ustawia pod spodem RequestMapping automatycznie
     // Jak nie ma nic w nawiasie -> Tutaj jest od razu value = "/tasks", value jest powiązany aliasem z RequestMapping
-    @GetMapping("/tasks")
+    // W metodę wchodzimy tylko jeśli dostajemy jakieś parametry w URL
+    // Jeżeli nie chcemy, żeby to tak działało to potrzebujemy dodać
+    // Przed -> @GetMapping("/tasks")
+    @GetMapping(value = "/tasks", params = {"!sort", "!page", "!size"})
     ResponseEntity<?> readAllTasks() {
         // Loggerem dajemy znać że wsyzstkie taski ujawnione
         // Dostajemy warning przy próbie GET w postman o treści Exposing all the tasks!
@@ -53,4 +57,17 @@ class TaskController {
         // Dokumentacja GOOGLE: spring io overriding spring data REST Reposnse Handlers
         return ResponseEntity.ok(repository.findAll());
     }
+
+    // Jak chcemy stronicować w tym kontrolerze, trzeba nowy get mapping
+    // Odpala się w pozostałych przypadkach
+    // Już po samym mappingu spring wywoła metodę
+    // Dzięki temu mamy sortowanie i stronicowanie przechodzące przez stworzony kontroler
+    @GetMapping("/tasks")
+    ResponseEntity<?> readAllTasks(Pageable page) {
+        // Spring dodaje coś w stylu HATEOS np content
+        logger.info("Custom pageable!");
+        // Żeby użyć page - spring ma to wbudowane
+        return ResponseEntity.ok(repository.findAll(page));
+    }
+
 }
