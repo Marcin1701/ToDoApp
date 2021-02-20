@@ -1,6 +1,7 @@
 package pl.todoapp.MarcinRogozToDoApp.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -26,6 +27,23 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     @Override
     @RestResource(exported = false)
     void delete(Task task);
+
+    // Repozytoria Spring (Spring Data) to DSL - procesowanie kolekcji
+    // Każda metoda tłumaczona jest na zapytania do BD
+    // Można tworzyć własne metody
+    // Metoda zwraca listę tasków
+    // Metoda będzie dostępna pod adresem URL
+    // Dodajemy parametr @RestResource
+    // Bez tego - mamy url /findByDoneIsTrue
+    // W Postman - GET: localhost:8080/tasks/search/done
+    @RestResource(path = "done", rel = "done")
+    List<Task> findByDoneIsTrue();
+
+    // Nie mamy wartości dla flagi done, musi zostać przekazana jako parametr
+    // Musimy dodać parametr do adresu URL
+    // W Postman - GET: localhost:8080/tasks/search/done2?state=false
+    @RestResource(path = "done2", rel="done2")
+    List<Task> findByDone(@Param("state") boolean done);
 
 
     // Jpa repository - mamy operacja findAll
