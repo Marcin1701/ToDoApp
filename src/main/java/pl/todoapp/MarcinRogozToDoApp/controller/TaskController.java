@@ -44,9 +44,13 @@ class TaskController {
     @GetMapping("/tasks")
     ResponseEntity<?> readAllTasks() {
         // Loggerem dajemy znać że wsyzstkie taski ujawnione
+        // Dostajemy warning przy próbie GET w postman o treści Exposing all the tasks!
         logger.warn("Exposing all the tasks!");
         // Wywyołamy metodę interfejsu findAll() i dostajemy wszystkie taski - metoda fabrykująca ok
         // Dostajemy kolekcję - Listę - Tasków
+        // Nie dostajemy HATEOS już
+        // Jak zrobić to? - Trzeba zależność Maven Spring HATEOS - dostajemy jeszcze 1 wrapper
+        // Dokumentacja GOOGLE: spring io overriding spring data REST Reposnse Handlers
         return ResponseEntity.ok(repository.findAll());
     }
 }
