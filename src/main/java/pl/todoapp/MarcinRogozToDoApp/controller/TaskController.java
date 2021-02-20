@@ -8,10 +8,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import pl.todoapp.MarcinRogozToDoApp.model.Task;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
 
+import java.util.List;
+
+// Coraz więcej funkcjonalności dajemy w kontrolerze a nie w Repozytorium
+// W repo mamy naiwne nadpisywanie metod - czyli tylko adnotację dodajemy
+// Dodajemy kolejną warstwę między kontrolerem a repozytorium - np dla User Story
+// Czasami command handler uzywamy - kontroler dostaje komenty w metodach
+// Czasami używa repo a czasami zewnętrzną usługę
+
 // Wiążemy kontroler z istniejącym repozytorium
-@RepositoryRestController   // Adnotacja Springowa - Repozytorium i Kontroler skanuje klasy przy uruchamianiu - zarządza nimi
+@RestController // Adnotacja Springowa - Repozytorium i Kontroler skanuje klasy przy uruchamianiu - zarządza nimi
 class TaskController {
     // Pole prywatne - Repozytorium - na nim działamy
     private final TaskRepository repository;
@@ -46,7 +56,7 @@ class TaskController {
     // Jeżeli nie chcemy, żeby to tak działało to potrzebujemy dodać
     // Przed -> @GetMapping("/tasks")
     @GetMapping(value = "/tasks", params = {"!sort", "!page", "!size"})
-    ResponseEntity<?> readAllTasks() {
+    ResponseEntity<List<Task>> readAllTasks() {
         // Loggerem dajemy znać że wsyzstkie taski ujawnione
         // Dostajemy warning przy próbie GET w postman o treści Exposing all the tasks!
         logger.warn("Exposing all the tasks!");
@@ -62,12 +72,13 @@ class TaskController {
     // Odpala się w pozostałych przypadkach
     // Już po samym mappingu spring wywoła metodę
     // Dzięki temu mamy sortowanie i stronicowanie przechodzące przez stworzony kontroler
+    // Nie możemy tutaj dac List<Task>
     @GetMapping("/tasks")
     ResponseEntity<?> readAllTasks(Pageable page) {
         // Spring dodaje coś w stylu HATEOS np content
         logger.info("Custom pageable!");
         // Żeby użyć page - spring ma to wbudowane
-        return ResponseEntity.ok(repository.findAll(page));
+        return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
 }

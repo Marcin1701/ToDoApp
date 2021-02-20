@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -13,20 +14,25 @@ import java.util.List;
 // RepositoryRestResource() -> z nawiasami to HATEOS
 // 1 parametr to url gdzie jest dostępny, a 2 to kolekcja (Tasks)
 //@RepositoryRestResource(path = "todos", collectionResourceRel = "todos")
-@RepositoryRestResource
+// Rezygnujemy ze spring data rest - repo nie potrzebuje udostępniać bezpośrendio do kontrolera
+// @RepositoryRestResource
+@Repository
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 
     // Co jeśli nie chcemy mieć metod CRUDowych np delete lub save
     // Nadpisujemy metody, czyli @RestResource(exported = false)
     // NADPISUJEMY OBIE METODY DELETE
     // Skutkiem jest METHOD NOT ALLOWED - Błąd 405
+
+    // Jeśli jest adnotacja @Repository to nie potrzebujemy metod poniżej:
+    /*
     @Override
     @RestResource(exported = false)
     void deleteById(Integer integer);
-
     @Override
     @RestResource(exported = false)
     void delete(Task task);
+    */
 
     // Repozytoria Spring (Spring Data) to DSL - procesowanie kolekcji
     // Każda metoda tłumaczona jest na zapytania do BD
