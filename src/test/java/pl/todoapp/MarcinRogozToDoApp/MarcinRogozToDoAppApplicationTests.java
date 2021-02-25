@@ -7,10 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class MarcinRogozToDoAppApplicationTests {
 
-	// Test do ładowania kontekstu Spring - czy wgl aplikacja się uruchomi
-	@Test
-	void contextLoads() {
+    // Test do ładowania kontekstu Spring - czy wgl aplikacja się uruchomi
+    @Test
+    void contextLoads() {
 
-	}
+    }
 
 }

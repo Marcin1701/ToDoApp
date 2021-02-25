@@ -10,28 +10,28 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.validation.Validator;
 
-@SpringBootApplication								  // Do walidacji danych
+@SpringBootApplication                                  // Do walidacji danych
 public class MarcinRogozToDoAppApplication { // implements RepositoryRestConfigurer {
 
-	// Aby uruchomić budowanie aplikacji:
-	// 1. Maven - Package (Lifecycle) albo mvnw.cmd package (w konsoli)
-	// 2. Pojawia się folder target
+    // Aby uruchomić budowanie aplikacji:
+    // 1. Maven - Package (Lifecycle) albo mvnw.cmd package (w konsoli)
+    // 2. Pojawia się folder target
 
-	// Apliacja pozwala nam wystartować Spring
-	public static void main(String[] args) {
-		// Metoda do uruchomienia Spring
-		SpringApplication.run(MarcinRogozToDoAppApplication.class, args);
-	}
+    // Apliacja pozwala nam wystartować Spring
+    public static void main(String[] args) {
+        // Metoda do uruchomienia Spring
+        SpringApplication.run(MarcinRogozToDoAppApplication.class, args);
+    }
 
-	@Bean
-	Validator validator() {
-		// Obiekt typu Validator jest klasą zarządzalną przez Springa
-		return new LocalValidatorFactoryBean();
-	}
+    @Bean
+    Validator validator() {
+        // Obiekt typu Validator jest klasą zarządzalną przez Springa
+        return new LocalValidatorFactoryBean();
+    }
 
-	// Parametr validate listener - dodajemy walidator
-	// Reaguje na błędy usera podczas wysyłania żądania html
-	// Dzięki temu pojawia się informacja z adnotacji @NotBlank w Task
+    // Parametr validate listener - dodajemy walidator
+    // Reaguje na błędy usera podczas wysyłania żądania html
+    // Dzięki temu pojawia się informacja z adnotacji @NotBlank w Task
 	/*
 	@Override
 	public void configureValidatingRepositoryEventListener(final ValidatingRepositoryEventListener validatingListener) {

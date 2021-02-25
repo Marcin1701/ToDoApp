@@ -1,16 +1,19 @@
 package pl.todoapp.MarcinRogozToDoApp.controller;
 
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 //import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import pl.todoapp.MarcinRogozToDoApp.model.Task;
 //import pl.todoapp.MarcinRogozToDoApp.model.SqlTaskRepository;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 // Coraz więcej funkcjonalności dajemy w kontrolerze a nie w Repozytorium
@@ -25,14 +28,14 @@ import java.util.List;
 // modelujemy serce architektury, czyli mamy w modelu metody np. opłaćZamówienie, zarezerwujLot
 
 // Wiążemy kontroler z istniejącym repozytorium
-@RestController // Adnotacja Springowa - Repozytorium i Kontroler skanuje klasy przy uruchamianiu - zarządza nimi
+@Controller
+        // Adnotacja Springowa - Repozytorium i Kontroler skanuje klasy przy uruchamianiu - zarządza nimi
 class TaskController {
     // Pole prywatne - Repozytorium - na nim działamy
     private final TaskRepository repository;
 
     // Zwracamy wszystkie taski i Logujemy informację - "Uwaga zapytaliśmy bazę danych i pobraliśmy Taski"
     private final Logger logger = LoggerFactory.getLogger(TaskController.class);
-
 
     // Konstruktor - wymaga TaskRepository - Bean springowy
     // Spring najpierw tworzy TaskRepository, a dopiero potem wstrzukuje go do TaskController
@@ -83,6 +86,39 @@ class TaskController {
         logger.info("Custom pageable!");
         // Żeby użyć page - spring ma to wbudowane
         return ResponseEntity.ok(repository.findAll(page).getContent());
+    }
+
+    @GetMapping("/tasks/{id}")
+    ResponseEntity<Task> readTask(@PathVariable int id) {
+        logger.info("Get Method!");
+        return repository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Zwracamy nowy task
+    @PostMapping("/tasks")
+    ResponseEntity<Task> createTask(@RequestBody @Valid Task toCreate){
+        logger.info("Post Method!");
+        Task result = repository.save(toCreate);
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
+    }
+
+    // Metoda PUT
+    // Zaznaczamy w springu {parametr} że będzie jakiś id w którym akualizujemy zadanie
+    // Put da nam jako parametr nowego, zaktualizowanego taska
+    // Ciało musi być zwalidowane @Valid
+    // @Path Variable pozwala wziąć zmienną z id
+    // Jeśli nazwa zmiennej nie jest taka sama jak w adresie to dajemy @PathVariable("nazwa_w_URL) nazwa_zmiennej
+    @PutMapping("/tasks/{id}")
+    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        toUpdate.setId(id);
+        // Zapisz implementację
+        repository.save(toUpdate);
+        return ResponseEntity.noContent().build();
     }
 
 }
