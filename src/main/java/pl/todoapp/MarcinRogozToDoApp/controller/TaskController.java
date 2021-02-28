@@ -28,8 +28,7 @@ import java.util.List;
 // modelujemy serce architektury, czyli mamy w modelu metody np. opłaćZamówienie, zarezerwujLot
 
 // Wiążemy kontroler z istniejącym repozytorium
-@Controller
-        // Adnotacja Springowa - Repozytorium i Kontroler skanuje klasy przy uruchamianiu - zarządza nimi
+@RestController // Adnotacja Springowa - Repozytorium i Kontroler skanuje klasy przy uruchamianiu - zarządza nimi
 class TaskController {
     // Pole prywatne - Repozytorium - na nim działamy
     private final TaskRepository repository;
