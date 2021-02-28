@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.todoapp.MarcinRogozToDoApp.TaskConfigurationProperties;
 
 @RestController
 public class InfoController {
@@ -13,11 +14,19 @@ public class InfoController {
     // @Value("${spring.datasource.url}")
     // private String url;
     // Opcja z autowired - niezbyt dobra - jesteśmy zależni od springa
-    @Autowired
-    private DataSourceProperties dataSource;
+   // @Autowired
+    //private DataSourceProperties dataSource;
 
-    @Value("${my.prop}")
-    private String myProp;
+    //@Value("${task.allowMultipleTasksFromTemplate}")
+    //private TaskConfigurationProperties myProp;
+
+    private DataSourceProperties dataSource;
+    private TaskConfigurationProperties myProp;
+
+    InfoController(final DataSourceProperties dataSource, final TaskConfigurationProperties myProp) {
+        this.dataSource = dataSource;
+        this.myProp = myProp;
+    }
 
     @GetMapping("/info/url")
     String url() {
@@ -25,7 +34,7 @@ public class InfoController {
     }
 
     @GetMapping("/info/prop")
-    String myProp() {
-        return myProp;
+    boolean myProp() {
+        return myProp.isAllowMultipleTasksFromTemplate();
     }
 }
