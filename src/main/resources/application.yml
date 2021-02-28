@@ -1,10 +1,10 @@
 spring:
-  h2:
-    console:
-      enabled: true # Widocznoœæ konsoli
-      path: '/console'
+  h2.console:
+    enabled: true # Widocznoœæ konsoli
+    path: '/console'
   datasource:
     url: 'jdbc:h2:file:D:/Programowanie/Java/[Spring][IntelliJ][Kurs]Udemy/MarcinRogoz-ToDoApp/todo-db'  # Link do bazy danych
   jpa:
     hibernate:
       ddl-auto: 'create'  # Tworzenie tabeli przy starcie
+my.prop: 'test'
