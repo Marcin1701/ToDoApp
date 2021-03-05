@@ -1,6 +1,5 @@
 package pl.todoapp.MarcinRogozToDoApp.model;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -24,8 +23,21 @@ public class Task {
 
     private boolean done;
 
+    // UWAGA WAŻNE!!!!
+    // W DB kolumny często są nazywane z podkreśleniami: surname_and_name
+    // Tabele są w liczbie mnogiej
+    // Spring mapuje takie nazwy do camel case: surnameAndName
+
     // Format daty do postmana "2020-12-23T23:59:59.999"
     private LocalDateTime deadline;
+
+    // Tych pól nie udostępniamy w JSON
+    // Kolumna kiedy task stworzyliśmy\
+    // Ciekawostka: jest adnotacja polska @PESEL
+    // Jeśli nie chcemy mapować zmiennej na kolumnę w bazie dajemy: @Transient
+    private LocalDateTime createdOn;
+    // Kiedy zaktualizowana
+    private LocalDateTime updatedOn;
 
     public Task() {
     }
@@ -34,7 +46,7 @@ public class Task {
         return id;
     }
 
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id;
     }
 
@@ -42,7 +54,7 @@ public class Task {
         return description;
     }
 
-    public void setDescription(String description) {
+    void setDescription(String description) {
         this.description = description;
     }
 
@@ -58,7 +70,26 @@ public class Task {
         return deadline;
     }
 
-    public void setDeadline(final LocalDateTime deadline) {
+    void setDeadline(final LocalDateTime deadline) {
         this.deadline = deadline;
+    }
+
+    // Kiedy zczytamy encję
+    public void updateFrom(final Task source) {
+        this.description = source.description;
+        this.done = source.done;
+        this.deadline = source.deadline;
+    }
+
+    // Funkcja odpali się przed zapisem do DB - zazwyczaj stosowana do insertów
+    @PrePersist
+    void prePersist() {
+        createdOn = LocalDateTime.now();
+    }
+
+    // Wykonywana przed dokładaniem encji do managera
+    @PreUpdate
+    void preMerge() {
+        updatedOn = LocalDateTime.now();
     }
 }

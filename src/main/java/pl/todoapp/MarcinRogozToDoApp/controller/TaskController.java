@@ -115,9 +115,14 @@ class TaskController {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        toUpdate.setId(id);
+        // Alternatywa dla Patch metody z transactional
+         repository.findById(id)
+                .ifPresent(task -> {
+                            task.updateFrom(toUpdate);
+                            repository.save(task);
+                        });
         // Zapisz implementację
-        repository.save(toUpdate);
+        // repository.save(toUpdate);
         return ResponseEntity.noContent().build();
     }
 
