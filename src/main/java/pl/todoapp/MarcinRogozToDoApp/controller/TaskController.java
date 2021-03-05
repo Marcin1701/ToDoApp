@@ -12,6 +12,7 @@ import pl.todoapp.MarcinRogozToDoApp.model.Task;
 //import pl.todoapp.MarcinRogozToDoApp.model.SqlTaskRepository;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -120,4 +121,20 @@ class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+    // Programowanie aspektowe
+    // Metoda patch - po jej wykonaniu odwracamy stan taska z done na !done
+    // Każda metoda z transactional ma begin i commit - metoda musi być publiczna
+    // Musimy mieć beana aspektowego
+    @Transactional
+    @PatchMapping("/tasks/{id}")
+    public ResponseEntity<?> toggleTask(@PathVariable int id) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repository.findById(id).ifPresent(task -> task.setDone(!task.isDone()));
+        // Jeśli nie zostanie zwrócony obiekt/zmienna to transakcja nie zostanie wykonana
+        // i zapisana w DB, np po rzuceniu wyjątku w tym miejscu (albo innym)
+        // throw new RuntimeException();
+        return ResponseEntity.noContent().build();
+    }
 }

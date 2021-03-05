@@ -4,6 +4,9 @@ package pl.todoapp.MarcinRogozToDoApp.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+// Encje są zarządzane przez enitity managera
+// Metody persist itd
+
 // Klasa modelu Zadań
 @Entity                 // Encja w bazie danych
 @Table(name = "tasks")  // Dodawanie tabeli
