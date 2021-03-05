@@ -1,6 +1,7 @@
 package pl.todoapp.MarcinRogozToDoApp.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 //import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 //import org.springframework.data.rest.core.annotation.RestResource;
@@ -19,6 +20,14 @@ import java.util.List;
 @Repository
 interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer> {
 
+    // Tworzenie własnych zapytań SQL - nadpisywanie metod
+    @Override
+    // Można napisać z ?1 - jest to pierwszy parametr metody
+    // @Query(nativeQuery = true, value = "select count(*) > 0 from tasks where id=?1")
+    // boolean existsById(Integer id);
+    // Adnotacja @Param
+    @Query(nativeQuery = true, value = "select count(*) > 0 from tasks where id=:id")
+    boolean existsById(@Param("id") Integer id);
 
     // Jak sprytnie udostępnić kilka metod z repozytorium
 
