@@ -3,3 +3,18 @@
 
 Properties:
 Dokumentacja Springa
+
+
+Jeśli chcemy w properites np ukryć ścieżkę, albo adres /console.
+Tak aby nie trafił on na produkcję, np DB będzie też pod innym adresem na serwerach - używamy profili Springowych.
+
+Pliki YML zostały podzielone na takie które używamy lokalnie -local (Sciezka DB itp)
+-prod - kod na produkcję
+Oraz ogólne ustawienia dla wszystkich użytkowników
+
+Ustawianie profili:
+1. Edit Configurations
+2. Spring Boot -> Active Profiles: nazwa_profilu                                    lub
+3. Environment -> VM options: -Dspring.profiles.active=nazwa_profilu                lub
+4. Environment -> Environmental variables: spring_profiles_active=nazwa_profilu     lub
+5. Plik JAR w CMD: spring_profiles_active=nazwa_profilu java -jar nazwa_aplikacji.jar
