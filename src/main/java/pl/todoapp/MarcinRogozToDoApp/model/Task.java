@@ -16,8 +16,8 @@ public class Task {
     // Adnotacje walidujące javax.validation
     @NotBlank(message = "Tasks description must not be empty")
     // Nazwa inaczej w bazie, albo mapujemy pola albo na getterach
-    @Column(name = "desc")
     private String description;
+
     private boolean done;
 
     public Task() {

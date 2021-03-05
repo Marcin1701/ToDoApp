@@ -18,3 +18,25 @@ Ustawianie profili:
 3. Environment -> VM options: -Dspring.profiles.active=nazwa_profilu                lub
 4. Environment -> Environmental variables: spring_profiles_active=nazwa_profilu     lub
 5. Plik JAR w CMD: spring_profiles_active=nazwa_profilu java -jar nazwa_aplikacji.jar
+
+
+Do wrażliwych danych używamy serwera konfiguracyjnego. bootstrap.yml
+
+Używanie opcji z hibernate.ddl-auto jest niezbyt dobre.
+Załóżmy że mamy tablę zmapowaną w encję i edytujemy jakąś zmienną.
+Wtedy przy uruchomieniu DB tabela zostanie zdropowana - przy opcji update.
+Co jeśli chcemy, żeby taka tabela której nie ma w encji - zatrzymała dane?
+Co jak chcemy ją przechować w innej tabeli?
+Używamy czystego SQL, używamy mechanizmów (migracji) na bazie danych. Flyway lub liquibase.
+Po dodaniu Flyway, wywala się błąd: brak classpath:db/migration - potrzebny jest folder.
+
+W intellij ultimate możemy połączyć się z bazą danych.
+
+---------                   FLYWAY              ----------
+1. Dołączamy do poma
+2. łączymy się z bazą danych -dodajemy ją do zakładki database w IntelliJ
+3. Dodajemy folder w resources db.migration
+4. Tworzymy nowy plik: V1__init_tasks_table.sql - jest to plik z początkową bazą z wykonywanym sql
+5. Dodaje się tabela flayway_schema_history i w niej widzimy historię bazy
+6. NIE MOŻNA ZMIENIAC skryptu V1 - wyliczona jest checksuma w tabeli - wysypie się program
+7. Jeśli dodamy nową kolumnę to walimy plik V2 i lecimy
