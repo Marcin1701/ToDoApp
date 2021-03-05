@@ -3,6 +3,7 @@ package pl.todoapp.MarcinRogozToDoApp.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 // Encje są zarządzane przez enitity managera
 // Metody persist itd
@@ -22,6 +23,9 @@ public class Task {
     private String description;
 
     private boolean done;
+
+    // Format daty do postmana "2020-12-23T23:59:59.999"
+    private LocalDateTime deadline;
 
     public Task() {
     }
@@ -48,5 +52,13 @@ public class Task {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(final LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 }
