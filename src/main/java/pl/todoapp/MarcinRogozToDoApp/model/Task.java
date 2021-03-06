@@ -50,6 +50,15 @@ public class Task {
     @Embedded
     private Audit audit = new Audit();
 
+    // Nowy obiekt wskazujący na inną encję TaskGroup
+    // Wiele tasków może trafić do 1 grupy @ManyToOne
+    // @ManyToOne(cascade = CascadeType.REMOVE) - jeśli usuwa się task to usuwa się cała grupa
+    // Jeśli dodajemy grupę, która ma wiele tasków - dodajemy taska - aktualizujemy grupę
+    @ManyToOne
+    // Grupę dociągamy jeśli jest potrzebna - pobieramy taska - pobieramy grupę
+    @JoinColumn(name = "task_group_id")
+    private TaskGroup group;
+
     public Task() {
     }
 
@@ -85,11 +94,16 @@ public class Task {
         this.deadline = deadline;
     }
 
+    TaskGroup getGroup() {
+        return group;
+    }
+
     // Kiedy zczytamy encję
     public void updateFrom(final Task source) {
         this.description = source.description;
         this.done = source.done;
         this.deadline = source.deadline;
+        this.group = source.group;
     }
 
     /*
