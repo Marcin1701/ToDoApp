@@ -7,7 +7,7 @@ import java.util.Set;
 
 // Nowa encja z grupami tasków
 @Entity
-@Table(name = "tasks_groups")
+@Table(name = "task_groups")
 public class TaskGroup {
 
     @Id
@@ -18,9 +18,6 @@ public class TaskGroup {
     private String description;
 
     private boolean done;
-
-    @Embedded
-    private Audit audit = new Audit();
 
     // Jedna grupa ma w sobie wiele tasków
     // Lista nie jest najlepszym pomysłem, ale może być
@@ -36,6 +33,8 @@ public class TaskGroup {
     // Implementacja
     // Wewnątrz taska grupa jest zmapowana jako pole group (W Task jest pole group)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    // Możliwe jest robienie relacji w jedną stronę - wewnątrz taska nie ma nic
+    // @JoinColumn(referencedColumnName = "nazwa_kolumny")
     private Set<Task> tasks;
 
     public TaskGroup() {
