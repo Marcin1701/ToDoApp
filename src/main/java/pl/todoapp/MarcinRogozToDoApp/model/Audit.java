@@ -1,13 +1,15 @@
 package pl.todoapp.MarcinRogozToDoApp.model;
 
+import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
 // Dziedziczenie encji
-@MappedSuperclass
-abstract class BaseAuditableEntity {
+// Ta klasa jest osadzalna w innym miejscu
+@Embeddable
+class Audit {
 
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;

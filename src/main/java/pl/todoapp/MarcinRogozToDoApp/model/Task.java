@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 // Klasa modelu Zadań
 @Entity                 // Encja w bazie danych
 @Table(name = "tasks")  // Dodawanie tabeli
-public class Task extends BaseAuditableEntity {
+public class Task {
 
     // Wymagany klucz w bazie danych
     @Id
@@ -40,6 +40,15 @@ public class Task extends BaseAuditableEntity {
     // Kiedy zaktualizowana
     private LocalDateTime updatedOn;
     */
+
+    // Wstawiamy obiekt który jest embeddable
+    // Możemy zmapować w tym miejscu jakie tabele bierzemy z DB
+    // Dajemy @AttributeOverride() lub @AttributeOverrides()
+    //@AttributeOverrides({
+    //            @AttributeOverride(column = @Column(name="updatedOn"), name="updatedOn")
+    //})
+    @Embedded
+    private Audit audit = new Audit();
 
     public Task() {
     }
