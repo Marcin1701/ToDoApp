@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 // Klasa modelu Zadań
 @Entity                 // Encja w bazie danych
 @Table(name = "tasks")  // Dodawanie tabeli
-public class Task {
+public class Task extends BaseAuditableEntity {
 
     // Wymagany klucz w bazie danych
     @Id
@@ -31,6 +31,7 @@ public class Task {
     // Format daty do postmana "2020-12-23T23:59:59.999"
     private LocalDateTime deadline;
 
+    /*
     // Tych pól nie udostępniamy w JSON
     // Kolumna kiedy task stworzyliśmy\
     // Ciekawostka: jest adnotacja polska @PESEL
@@ -38,6 +39,7 @@ public class Task {
     private LocalDateTime createdOn;
     // Kiedy zaktualizowana
     private LocalDateTime updatedOn;
+    */
 
     public Task() {
     }
@@ -81,6 +83,7 @@ public class Task {
         this.deadline = source.deadline;
     }
 
+    /*
     // Funkcja odpali się przed zapisem do DB - zazwyczaj stosowana do insertów
     @PrePersist
     void prePersist() {
@@ -92,4 +95,5 @@ public class Task {
     void preMerge() {
         updatedOn = LocalDateTime.now();
     }
+    */
 }
