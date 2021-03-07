@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 // Nowa encja z grupami tasków
+// Możemy podawać nazwę encji np @Entity(name = "nazwa")
+// Wtedy wszędzie w query musimy dać "nazwa"
+// Lepiej to zostawić i zrobić bez nadpisań
 @Entity
 @Table(name = "task_groups")
 public class TaskGroup {
@@ -36,6 +39,10 @@ public class TaskGroup {
     // Możliwe jest robienie relacji w jedną stronę - wewnątrz taska nie ma nic
     // @JoinColumn(referencedColumnName = "nazwa_kolumny")
     private Set<Task> tasks;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public TaskGroup() {
     }
@@ -70,5 +77,13 @@ public class TaskGroup {
 
     void setTasks(final Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    Project getProject() {
+        return project;
+    }
+
+    void setProject(final Project project) {
+        this.project = project;
     }
 }

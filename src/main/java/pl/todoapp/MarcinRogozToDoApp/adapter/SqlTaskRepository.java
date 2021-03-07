@@ -1,4 +1,4 @@
-package pl.todoapp.MarcinRogozToDoApp.model;
+package pl.todoapp.MarcinRogozToDoApp.adapter;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -6,6 +6,8 @@ import org.springframework.data.repository.query.Param;
 //import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 //import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
+import pl.todoapp.MarcinRogozToDoApp.model.Task;
+import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
 
 import java.util.List;
 
@@ -28,6 +30,12 @@ interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer>
     // Adnotacja @Param
     @Query(nativeQuery = true, value = "select count(*) > 0 from tasks where id=:id")
     boolean existsById(@Param("id") Integer id);
+
+    // Generowanie zapytania sql
+    // Żeby zamknąć grupę tasków - musimy mieć informację czy taski są zakończone
+    @Override
+    boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);
+
 
     // Jak sprytnie udostępnić kilka metod z repozytorium
 
