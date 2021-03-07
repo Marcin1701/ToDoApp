@@ -1,0 +1,7 @@
+Tworzymy logikę która będzie łączyła ze sobą klasy, repozytoria itp
+
+Podsumowanie do tej pory:
+1. Bogaty model danych + repozytoria
+2. Kontrolery - są w tyle, ale warto rzeczy procesujące rozdzielać.
+3. Wydzielamy serwisy, są to klasy pomocnicze, pomagają zachować walidację
+4. Rozdzielamy encje na modele - projekcie
