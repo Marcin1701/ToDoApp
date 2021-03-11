@@ -1,6 +1,9 @@
 package pl.todoapp.MarcinRogozToDoApp.logic;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroup;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroupRepository;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
@@ -14,19 +17,27 @@ import java.util.stream.Collectors;
 
 // Są serwisy aplikacyjne i domenowe
 // Aplikacyjny - bliskie user story
+// Istnieją zakresy jak obiekt powinien być wstrzykiwany (singleton, 1 obiekt TaskGroupService na całą aplikację)
 @Service    // Adnotacja owija component
+//@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)    // Klasa jako szablon
+// Ratuje nas w wielu sytuacjach
+@RequestScope // W obrębie 1 żądania mamy 1 instancję klasy
 public class TaskGroupService {
 
-   private TaskGroupRepository repository;
+   private final TaskGroupRepository repository;
 
-   private TaskRepository taskRepository;
+   private final TaskRepository taskRepository;
+
+   // Jeśli TaskGroup service jest w 2 miejsach
+   // Liczenie np ilości wywołań
+    // private int count; (jeśli uderzy apkę wieloma wątkami to może się sypnąć, aby tego uniknąć używamy scope)
 
     TaskGroupService(final TaskGroupRepository repository, final TaskRepository taskRepository) {
         this.repository = repository;
         this.taskRepository = taskRepository;
     }
 
-    public GroupReadModel createGroup(GroupWriteModel source){
+    public GroupReadModel createGroup(final GroupWriteModel source){
         // Jeśli nie wiemy co jest zwracane z funkcji po prawej stronie - lepiej zamiast var dawać od razu typ
         TaskGroup result = repository.save(source.toGroup());
         return new GroupReadModel(result);
