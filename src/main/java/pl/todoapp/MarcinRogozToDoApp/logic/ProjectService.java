@@ -50,7 +50,10 @@ public class ProjectService {
                                             deadline.plusDays(step.getDaysToDeadLine()))
                                     ).collect(Collectors.toSet())
                     );
-                    return result;
+                    // kolejna poprawka
+                    result.setProject(project);
+                    // Poprawka po teście
+                    return taskGroupRepository.save(result);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
         return new GroupReadModel(targetGroup);
     }
