@@ -3,6 +3,8 @@ package pl.todoapp.MarcinRogozToDoApp.logic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.todoapp.MarcinRogozToDoApp.TaskConfigurationProperties;
+import pl.todoapp.MarcinRogozToDoApp.model.ProjectRepository;
+import pl.todoapp.MarcinRogozToDoApp.model.TaskGroup;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroupRepository;
 
 import static org.assertj.core.api.Assertions.*;
@@ -10,6 +12,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -63,12 +66,16 @@ class ProjectServiceTest {
         //assertTrue(mockGroupRepository.existsByDoneIsFalseAndProject_Id(500));
 
         // Kolejne potrzebne obiekty
-        var mockTemplate = mock(TaskConfigurationProperties.Template.class);
-        when(mockTemplate.isAllowMultipleTasks()).thenReturn(false);
+        //var mockTemplate = mock(TaskConfigurationProperties.Template.class);
+        //when(mockTemplate.isAllowMultipleTasks()).thenReturn(false);
         // and
-        var mockConfig = mock(TaskConfigurationProperties.class);
+        //var mockConfig = mock(TaskConfigurationProperties.class);
         // Jesli ktoś zapyta w konfiguracji o template to zwracamy template, który utworzyliśmy wyżej
-        when(mockConfig.getTemplate()).thenReturn(mockTemplate);
+        //when(mockConfig.getTemplate()).thenReturn(mockTemplate);
+
+        // metoda
+        TaskConfigurationProperties mockConfig = configurationReturning(false);
+
         // obiekt do testowania
         var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
         // wołanie metody - when
@@ -94,5 +101,41 @@ class ProjectServiceTest {
         assertThat(exception)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("one undone group");
+    }
+
+    @Test
+    @DisplayName("should throw IllegalArgumentException when configuration ok and no projects for given id")
+    void createGroup_configurationOk_And_noProjects_throwsIllegalArgumentException() {
+
+        //var mockTemplateRepository = mock(TaskConfigurationProperties.Template.class);
+        //when(mockTemplateRepository.isAllowMultipleTasks()).thenReturn(true);
+
+        //var mockConfig = mock(TaskConfigurationProperties.class);
+        //when(mockConfig.getTemplate()).thenReturn(mockTemplateRepository);
+
+        // Dane - given
+        var mockRepository = mock(ProjectRepository.class);
+        when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
+        // Do metody
+        TaskConfigurationProperties mockConfig = configurationReturning(true);
+
+        var toTest = new ProjectService(mockRepository, null, mockConfig);
+
+        var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
+
+        assertThat(exception)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("id not found");
+    }
+
+    // Metoda unika redundancji
+    private TaskConfigurationProperties configurationReturning(final boolean result) {
+        var mockTemplateRepository = mock(TaskConfigurationProperties.Template.class);
+        when(mockTemplateRepository.isAllowMultipleTasks()).thenReturn(result);
+
+        var mockConfig = mock(TaskConfigurationProperties.class);
+        when(mockConfig.getTemplate()).thenReturn(mockTemplateRepository);
+
+        return mockConfig;
     }
 }
