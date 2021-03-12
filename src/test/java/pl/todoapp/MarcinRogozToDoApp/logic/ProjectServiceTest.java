@@ -8,6 +8,7 @@ import pl.todoapp.MarcinRogozToDoApp.model.TaskGroup;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroupRepository;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 
@@ -57,10 +58,11 @@ class ProjectServiceTest {
 
         // WYKORZYSTANIE MOCKITO
         // Mechanizm refleksji pozwala nadpisywać metody
-        var mockGroupRepository = mock(TaskGroupRepository.class);
+        //var mockGroupRepository = mock(TaskGroupRepository.class);
         // Gdy ktoś na mockitowanym repo zawoła metodę existsIsDone... to możemy coś zrobić
         // Definiujemy z jakim argumentem ktoś metodę wywoła
-        when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(true);
+        //when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(true);
+        TaskGroupRepository mockGroupRepository = groupRepositoryReturning(true);
         // Jeśli ktoś wywoła
         //mockGroupRepository.existsByDoneIsFalseAndProject_Id(500); // to wpadamy do when i w zależności od tego co jest w parametrze zwracamy true lub false
         //assertTrue(mockGroupRepository.existsByDoneIsFalseAndProject_Id(500));
@@ -126,6 +128,32 @@ class ProjectServiceTest {
         assertThat(exception)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("id not found");
+    }
+
+    @Test
+    @DisplayName("should throw IllegalArgumentException when configured to allow just 1 group and no groups and no projects for given id")
+    void createGroup_noMultipleGroupsConfig_And_noUndoneGroupExists_noProjects_throwsIllegalArgumentException() {
+        // Dane - given
+        var mockRepository = mock(ProjectRepository.class);
+        when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
+        // dane
+        TaskGroupRepository mockGroupRepository = groupRepositoryReturning(false);
+        // dane
+        TaskConfigurationProperties mockConfig = configurationReturning(true);
+
+        var toTest = new ProjectService(mockRepository, null, mockConfig);
+
+        var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
+
+        assertThat(exception)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("id not found");
+    }
+
+    private TaskGroupRepository groupRepositoryReturning(final boolean result) {
+        var mockGroupRepository = mock(TaskGroupRepository.class);
+        when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(result);
+        return mockGroupRepository;
     }
 
     // Metoda unika redundancji
