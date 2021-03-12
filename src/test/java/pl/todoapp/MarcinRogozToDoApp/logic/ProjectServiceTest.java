@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import pl.todoapp.MarcinRogozToDoApp.TaskConfigurationProperties;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroupRepository;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 
@@ -71,8 +72,27 @@ class ProjectServiceTest {
         // obiekt do testowania
         var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
         // wołanie metody - when
-        toTest.createGroup(LocalDateTime.now(), 0);
-        // sprawdzenie skutku - then
+       // try {
+        //    toTest.createGroup(LocalDateTime.now(), 0);
+        //} catch(IllegalStateException e) {
+            // sprawdzenie skutku - then
+            // łapiemy wyjątek
+          //  assertThat(e).isEqualTo()
+        //}
+        // Można też od razu połączyć then + when
+        //assertThatThrownBy(() -> {
+        //    toTest.createGroup(LocalDateTime.now(), 0);
+       // }).isInstanceOf(IllegalStateException.class);
+        // Albo
+        //assertThatExceptionOfType(IllegalStateException.class)
+        //        .isThrownBy(() -> toTest.createGroup(LocalDateTime.now(), 0));
+        // Albo
+        // Podział na 3 części w teście jest bardziej intuicyjny
+        // Sprawdzamy treść wyjątku
+        var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
 
+        assertThat(exception)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("one undone group");
     }
 }
