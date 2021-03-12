@@ -58,6 +58,7 @@
             <artifactId>h2</artifactId>
             <!-- <scope>runtime</scope> -->
         </dependency>
+
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
@@ -66,6 +67,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <!-- Z zależności jest wyłączone junit vintage engine
+            Junit rozbił się na runnera - junit chce żeby 1 platforma dla wszystkich testów
+            (chcą zebrać wszsytkie platformy w 1 miejsce) -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
