@@ -15,13 +15,14 @@ public class InfoController {
     // private String url;
     // Opcja z autowired - niezbyt dobra - jesteśmy zależni od springa
    // @Autowired
-    //private DataSourceProperties dataSource;
-
+    //private DataSourceProperties dataSource
     //@Value("${task.allowMultipleTasksFromTemplate}")
     //private TaskConfigurationProperties myProp;
 
     private DataSourceProperties dataSource;
     private TaskConfigurationProperties myProp;
+
+    // Jeśli mamy kilka konstruktorów trzeba dodawać autowired
 
     InfoController(final DataSourceProperties dataSource, final TaskConfigurationProperties myProp) {
         this.dataSource = dataSource;

@@ -11,12 +11,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 // Testy głównie w warstwie serwisów
-@Service
+
+/**
+ * Klasa się nie skompiluje jeśli nie mamy dostępu do Spring
+ * 2 szkoły - albo poza springiem tworzymy komponenty, albo w
+ */
+
+// Bez service jest to czysta klasa javy - korzysta z samych klas javy
+// Konfiguracja beanem nam wstrzykuje zależności do spring - klasa nie jest zależna
+    // To ma sens kiedy wiemy, że będziemy chcieli szybko się pozbyć springa
+    // U nas kontroler zależy od springa i tak więc tutaj to niepotrzebne - tylko tak że można to zrobić
+//@Service
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final TaskGroupRepository taskGroupRepository;
     private final TaskConfigurationProperties taskConfigurationProperties;
+
+    // Trzeba dodawać autowired, jeśli mamy kilka konstruktorów
 
     ProjectService(final ProjectRepository projectRepository, final TaskGroupRepository taskGroupRepository, final TaskConfigurationProperties taskConfigurationProperties) {
         this.projectRepository = projectRepository;

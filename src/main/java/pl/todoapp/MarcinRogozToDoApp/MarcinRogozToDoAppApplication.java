@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
 
 import javax.validation.Validator;
 
@@ -28,11 +29,20 @@ public class MarcinRogozToDoAppApplication { // implements RepositoryRestConfigu
         SpringApplication.run(MarcinRogozToDoAppApplication.class, args);
     }
 
+
+    // Istnieje kolejny sposób dodawania rzeczy do kontekstu springa
+    // @Bean
+    // Można równie dobrze wklejać tutaj repository
     @Bean
-    Validator validator() {
+    Validator validator(TaskRepository repository) {
+        // w metodach możemy korzystać z rzeczy wstrzykniętych
+        //return repository.findById(1)
+              //  .map((task) -> new LocalValidatorFactoryBean())
+               // .orElse(null);
         // Obiekt typu Validator jest klasą zarządzalną przez Springa
         return new LocalValidatorFactoryBean();
     }
+
 
     // Parametr validate listener - dodajemy walidator
     // Reaguje na błędy usera podczas wysyłania żądania html

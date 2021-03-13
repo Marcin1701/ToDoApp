@@ -19,7 +19,7 @@ import java.util.List;
 //@RepositoryRestResource(path = "todos", collectionResourceRel = "todos")
 // Rezygnujemy ze spring data rest - repo nie potrzebuje udostępniać bezpośrendio do kontrolera
 // @RepositoryRestResource
-@Repository
+@Repository                                         // Jeśli rozszerza JPARepository - jest automatycznie beanem
 interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer> {
 
     // Tworzenie własnych zapytań SQL - nadpisywanie metod
