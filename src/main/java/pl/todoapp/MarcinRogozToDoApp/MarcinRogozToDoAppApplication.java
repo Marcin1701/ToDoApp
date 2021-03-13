@@ -6,11 +6,16 @@ import org.springframework.context.annotation.Bean;
 //import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
 //import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 //import org.springframework.validation.Validator;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.validation.Validator;
 
+// Doklejamy klasę konfiguracyjną - jeśli jest ona nie w tym samym pakiecie
+//@Import(TaskConfigurationProperties.class)
 @SpringBootApplication                                  // Do walidacji danych
+//@ComponentScan(basePackages = "db.migration")           // Dodatkowe pakiety do skanowania
 public class MarcinRogozToDoAppApplication { // implements RepositoryRestConfigurer {
 
     // Aby uruchomić budowanie aplikacji:
