@@ -2,6 +2,7 @@ package pl.todoapp.MarcinRogozToDoApp.logic;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import pl.todoapp.MarcinRogozToDoApp.TaskConfigurationProperties;
 import pl.todoapp.MarcinRogozToDoApp.model.ProjectRepository;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroupRepository;
@@ -11,14 +12,17 @@ import pl.todoapp.MarcinRogozToDoApp.model.TaskGroupRepository;
 // Możemy stworzyć klasę konfiguracyjną  - nie jesteśmy zależni od springa
 // Konfiguracjae nie musi być publiczna - może być pakietowa
 @Configuration
+// Konfiguracja XML - jak to kiedyś wyglądało
+@ImportResource("classpath:applicationContext.xml")
 class LogicConfiguration {
 
     // Spring wstrzyknie do beana obiekty
     // Spring wie kiedy stworzyć
-    @Bean
+    /*@Bean
     ProjectService service(final ProjectRepository repository,
                            final TaskGroupRepository taskGroupRepository,
                            final TaskConfigurationProperties config) {
         return new ProjectService(repository, taskGroupRepository, config);
     }
+    */
 }
