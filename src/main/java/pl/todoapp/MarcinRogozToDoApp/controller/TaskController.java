@@ -3,6 +3,7 @@ package pl.todoapp.MarcinRogozToDoApp.controller;
 import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 //import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,10 @@ class TaskController {
     // Spring najpierw tworzy TaskRepository, a dopiero potem wstrzukuje go do TaskController
     // Adotacja @Autowired była kiedyś potrzebna - teraz już nie
     // Jak to wykorzystać - np nadpisać metodę zwracającą Taski
+
+    // Żeby naprawić błąd dwóch sqlTaskRepository - możemy dawać - wiążemy się ze springiem @Qualifier, można lepiej
+    // Qualifier zepsułby testy
+    // TaskController(@Qualifier("sqlTaskRepository") final TaskRepository repository)
     TaskController(final TaskRepository repository) {
         this.repository = repository;
     }
