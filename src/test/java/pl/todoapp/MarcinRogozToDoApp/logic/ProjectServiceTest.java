@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class ProjectServiceTest {
@@ -27,7 +26,7 @@ class ProjectServiceTest {
     @Test
     // Jak wyświeltany jest w raportach
     @DisplayName("should throw IllegalStateException when configured to allow just 1 group and the other undone group exists")
-    void createGroup_one_boMultipleGroupsConfig_And_openGroupExists_throwsIllegalStateException() {
+    void createGroup_one_noMultipleGroupsConfig_And_openGroupExists_throwsIllegalStateException() {
         // Przygotowanie danych - given
         //var mockGroupRepository = new TaskGroupRepository() {
             // Nadpisujemy metody, które są już zaimplementowane
@@ -80,7 +79,7 @@ class ProjectServiceTest {
         TaskConfigurationProperties mockConfig = configurationReturning(false);
 
         // obiekt do testowania
-        var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
+        var toTest = new ProjectService(null, mockGroupRepository, mockConfig, null);
         // wołanie metody - when
        // try {
         //    toTest.createGroup(LocalDateTime.now(), 0);
@@ -122,7 +121,7 @@ class ProjectServiceTest {
         // Do metody
         TaskConfigurationProperties mockConfig = configurationReturning(true);
 
-        var toTest = new ProjectService(mockRepository, null, mockConfig);
+        var toTest = new ProjectService(mockRepository, null, mockConfig, null);
 
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
 
@@ -142,7 +141,7 @@ class ProjectServiceTest {
         // dane
         TaskConfigurationProperties mockConfig = configurationReturning(true);
 
-        var toTest = new ProjectService(mockRepository, null, mockConfig);
+        var toTest = new ProjectService(mockRepository, null, mockConfig, null);
 
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
 
@@ -153,7 +152,7 @@ class ProjectServiceTest {
 
     @Test
     @DisplayName("should create a new group from project")
-    void createGroup_configurationOn_existingProject_createsAndSavesGroup() {
+    void createGroup_configurationOk_existingProject_createsAndSavesGroup() {
         // Dane
         var today = LocalDate.now().atStartOfDay();
         //dane
@@ -165,11 +164,13 @@ class ProjectServiceTest {
                 .thenReturn(Optional.of(project));
         // dane
         InMemoryGroupRepository inMemoryGroupRepository = inMemoryGroupRepository();
+        var serviceWithInMemRepo = new TaskGroupService(inMemoryGroupRepository, null);
+
         // dane
         int countBeforeCall = inMemoryGroupRepository.count();
         TaskConfigurationProperties mockConfig = configurationReturning(true);
 
-        var toTest = new ProjectService(mockRepository, inMemoryGroupRepository, mockConfig);
+        var toTest = new ProjectService(mockRepository, inMemoryGroupRepository, mockConfig, serviceWithInMemRepo);
         // Daty są ważne
         // when
         GroupReadModel result = toTest.createGroup(today, 1);

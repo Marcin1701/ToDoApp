@@ -2,7 +2,6 @@ package pl.todoapp.MarcinRogozToDoApp.logic;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import pl.todoapp.MarcinRogozToDoApp.TaskConfigurationProperties;
 import pl.todoapp.MarcinRogozToDoApp.model.ProjectRepository;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroupRepository;
@@ -22,9 +21,10 @@ class LogicConfiguration {
     @Bean
     ProjectService projectService(final ProjectRepository repository,
                            final TaskGroupRepository taskGroupRepository,
-                           final TaskConfigurationProperties config)
+                           final TaskConfigurationProperties config,
+                                  final TaskGroupService taskGroupService)
     {
-        return new ProjectService(repository, taskGroupRepository, config);
+        return new ProjectService(repository, taskGroupRepository, config, taskGroupService);
     }
 
     @Bean
