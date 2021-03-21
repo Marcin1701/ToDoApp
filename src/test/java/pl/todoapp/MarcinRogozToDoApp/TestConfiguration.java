@@ -26,6 +26,8 @@ public class TestConfiguration {
     // z DB używać będzie primary
     //@ConditionalOnMissingBean // Słuchaj - to task repository obowiązuje tylko jeśli nie ma innego repo (mamy inne repo, nie działa)
     //@ConditionalOnProperty  // Dla zdefiniowanej właściwości to task repo obowiązuje
+    // Włączamy nowy profil i wyłączamy stary przez @Primary
+    @Primary
     @Profile("integration") //"!prod"}) // Tylko obowiązuje jeśli mamy określony profil, doprecyzowujemy że nie dla profilu produkcyjnego
     TaskRepository testRepo() {
         // Klasa anonimowa - jest problem, contextLoad() się nie uruchomi
