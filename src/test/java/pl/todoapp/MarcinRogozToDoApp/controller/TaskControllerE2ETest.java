@@ -22,7 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 // Aplikacja wstaje na losowym porcie
 // Korzystamy z bazy w pamięci
-@ActiveProfiles("integration")
+// Używamy profilu a to nie jest dobre, implementacja repo z pamięci
+// Ten test nie sprawdza dodania wszystkich metod, czy native query zadziała
+// Jeśli używamy własnej implementacji
+//@ActiveProfiles("integration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TaskControllerE2ETest {
 
@@ -42,6 +45,7 @@ class TaskControllerE2ETest {
     void httpGet_returnsAllTasks() {
         // Dane - given
         // Wstanie osobna instancja bazy danych - MAMY TAKĄ SAMĄ BAZĘ CO NA PRODUKCJI
+        int initialSize = repo.findAll().size();
         repo.save(new Task("foo", LocalDateTime.now()));
         repo.save(new Task("bar", LocalDateTime.now()));
 
@@ -50,6 +54,6 @@ class TaskControllerE2ETest {
         Task[] result = restTemplate.getForObject("http://localhost:" + port + "/tasks", Task[].class);
 
         // Potem  test
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(initialSize + 2);
     }
 }
