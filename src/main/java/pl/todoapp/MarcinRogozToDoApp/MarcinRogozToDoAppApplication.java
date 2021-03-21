@@ -34,7 +34,7 @@ public class MarcinRogozToDoAppApplication { // implements RepositoryRestConfigu
     // @Bean
     // Można równie dobrze wklejać tutaj repository
     @Bean
-    Validator validator(TaskRepository repository) {
+    Validator validator() {
         // w metodach możemy korzystać z rzeczy wstrzykniętych
         //return repository.findById(1)
               //  .map((task) -> new LocalValidatorFactoryBean())

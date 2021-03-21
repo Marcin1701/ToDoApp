@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 // Są serwisy aplikacyjne i domenowe
 // Aplikacyjny - bliskie user story
 // Istnieją zakresy jak obiekt powinien być wstrzykiwany (singleton, 1 obiekt TaskGroupService na całą aplikację)
-@Service    // Adnotacja owija component
+//@Service    // Adnotacja owija component
 //@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)    // Klasa jako szablon
 // Ratuje nas w wielu sytuacjach
-@RequestScope // W obrębie 1 żądania mamy 1 instancję klasy
+//@RequestScope // W obrębie 1 żądania mamy 1 instancję klasy
 public class TaskGroupService {
 
    private final TaskGroupRepository repository;

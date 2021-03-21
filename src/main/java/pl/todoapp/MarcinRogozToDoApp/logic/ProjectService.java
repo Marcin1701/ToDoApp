@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
     // To ma sens kiedy wiemy, że będziemy chcieli szybko się pozbyć springa
     // U nas kontroler zależy od springa i tak więc tutaj to niepotrzebne - tylko tak że można to zrobić
 //@Service
+    // Spring przy stosowaniu Proxy używa cglib
 public class ProjectService {
 
     private final ProjectRepository projectRepository;

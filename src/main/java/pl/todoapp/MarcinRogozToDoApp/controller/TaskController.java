@@ -4,6 +4,7 @@ import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 //import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,7 @@ import java.util.List;
 @RestController // Adnotacja Springowa - Repozytorium i Kontroler skanuje klasy przy uruchamianiu - zarządza nimi
 class TaskController {
     // Pole prywatne - Repozytorium - na nim działamy
+    // Spring nie wstrzykuje TaskRepository - tylko warstwę pośrednią
     private final TaskRepository repository;
 
     // Zwracamy wszystkie taski i Logujemy informację - "Uwaga zapytaliśmy bazę danych i pobraliśmy Taski"
@@ -46,6 +48,8 @@ class TaskController {
     // Żeby naprawić błąd dwóch sqlTaskRepository - możemy dawać - wiążemy się ze springiem @Qualifier, można lepiej
     // Qualifier zepsułby testy
     // TaskController(@Qualifier("sqlTaskRepository") final TaskRepository repository)
+    // Adnotacja @Lazy - bean ma być leniwie dodawany
+    // Np repozytorium ma implementację i 1 zależy od 2 a 2 od 1, brzydkie obejście to dodanie @Lazy w 1 miejscu
     TaskController(final TaskRepository repository) {
         this.repository = repository;
     }
@@ -147,4 +151,11 @@ class TaskController {
         // throw new RuntimeException();
         return ResponseEntity.noContent().build();
     }
+
+    // Transactional działa bo nie wywołuje bezpośrednio metody
+    // Bezpośrednie wywołanie nie zadziała
+    // Trzeba by metodę foobar wołać z zewnątrz
+    //public void foobar() {
+     //   this.toggleTask(1);
+    //}
 }
