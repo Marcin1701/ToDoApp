@@ -1,5 +1,6 @@
 package pl.todoapp.MarcinRogozToDoApp.controller;
 
+import org.apache.tomcat.jni.Local;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +10,12 @@ import org.springframework.test.context.ActiveProfiles;
 import pl.todoapp.MarcinRogozToDoApp.model.Task;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,4 +62,19 @@ class TaskControllerE2ETest {
         // Potem  test
         assertThat(result).hasSize(initialSize + 2);
     }
+
+    @Test
+    void httpGet_returnOneTask() {
+        String desc = "testDescription";
+        LocalDateTime time = LocalDateTime.now();
+
+        repo.save(new Task(desc, time));
+
+       List<Task> result = Arrays.asList(restTemplate.getForObject("http://localhost:" + port + "/tasks", Task[].class));
+
+        Optional<Task> returnTask = result.stream().parallel()
+                .filter(x -> x.getDescription().equals(desc) && x.getDeadline().getSecond() == time.getSecond()).findAny();
+        assertTrue(returnTask.isPresent());
+    }
+
 }
