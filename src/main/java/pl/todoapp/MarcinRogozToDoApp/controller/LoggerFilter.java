@@ -23,9 +23,13 @@ public class LoggerFilter implements Filter {//, Ordered {
     // Metoda sprawdza requesty
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
+        // Jeżli chcemy przeprocesować request - na odpowiedź warto poczekać
+        // Trzeba by złapać wyjątek który może polecieć
+        // W Springu jest alternatywa HandletInterceptor
         if (request instanceof HttpServletRequest) {
             var httpRequest = (HttpServletRequest) request;
             // Jak ktoś uderza to dostanie ten filtr jako pierwszy
+            // Wywołany jako 1
             logger.info("[doFilter]" + httpRequest.getMethod() + " " + httpRequest.getRequestURI());
         }
         // Aplikacja bez chain zawiera buga - request nie jest procesowany.
@@ -33,6 +37,8 @@ public class LoggerFilter implements Filter {//, Ordered {
         // Po ifie żeby każde żądanie poleciało
         // Możemy przekazywać parametry requesta!, modyfikować je
         chain.doFilter(request, response);
+        // Wywołany jako 4
+        logger.info("[doFilter] 2");
     }
 
     // Definiowanie kolejności filtrów - Ordered
