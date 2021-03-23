@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 //import org.springframework.validation.Validator;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
 
@@ -16,6 +17,7 @@ import javax.validation.Validator;
 // Doklejamy klasę konfiguracyjną - jeśli jest ona nie w tym samym pakiecie
 //@Import(TaskConfigurationProperties.class)
 @SpringBootApplication                                  // Do walidacji danych
+@EnableAsync    // Bez tego NIE BĘDZIE ASYNCHRONICZNOSCI !!!!! - dodajemy w klasie konfiguracyjnej
 //@ComponentScan(basePackages = "db.migration")           // Dodatkowe pakiety do skanowania
 public class MarcinRogozToDoAppApplication { // implements RepositoryRestConfigurer {
 

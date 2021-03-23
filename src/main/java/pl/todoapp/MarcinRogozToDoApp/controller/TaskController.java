@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import pl.todoapp.MarcinRogozToDoApp.logic.TaskService;
 import pl.todoapp.MarcinRogozToDoApp.model.Task;
 //import pl.todoapp.MarcinRogozToDoApp.model.SqlTaskRepository;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
@@ -21,6 +22,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 // Coraz więcej funkcjonalności dajemy w kontrolerze a nie w Repozytorium
 // W repo mamy naiwne nadpisywanie metod - czyli tylko adnotację dodajemy
@@ -41,6 +43,9 @@ class TaskController {
     // Spring nie wstrzykuje TaskRepository - tylko warstwę pośrednią
     private final TaskRepository repository;
 
+    // Dodajemy nowy obiekt TaskService
+    private final TaskService taskService;
+
     // Zwracamy wszystkie taski i Logujemy informację - "Uwaga zapytaliśmy bazę danych i pobraliśmy Taski"
     private final Logger logger = LoggerFactory.getLogger(TaskController.class);
 
@@ -54,8 +59,9 @@ class TaskController {
     // TaskController(@Qualifier("sqlTaskRepository") final TaskRepository repository)
     // Adnotacja @Lazy - bean ma być leniwie dodawany
     // Np repozytorium ma implementację i 1 zależy od 2 a 2 od 1, brzydkie obejście to dodanie @Lazy w 1 miejscu
-    TaskController(final TaskRepository repository) {
+    TaskController(final TaskRepository repository, final TaskService taskService) {
         this.repository = repository;
+        this.taskService = taskService;
     }
 
     // Metoda zwraca listę wszystkich tasków
@@ -76,7 +82,9 @@ class TaskController {
     // Jeżeli nie chcemy, żeby to tak działało to potrzebujemy dodać
     // Przed -> @GetMapping("/tasks")
     @GetMapping(params = {"!sort", "!page", "!size"})
-    ResponseEntity<List<Task>> readAllTasks() {
+    //ResponseEntity<List<Task>> readAllTasks() {
+    // Springowe kontrolery mogą zwracać completable future
+    CompletableFuture<ResponseEntity<List<Task>>> readAllTasks() {
         // Loggerem dajemy znać że wsyzstkie taski ujawnione
         // Dostajemy warning przy próbie GET w postman o treści Exposing all the tasks!
         logger.warn("Exposing all the tasks!");
@@ -85,7 +93,11 @@ class TaskController {
         // Nie dostajemy HATEOS już
         // Jak zrobić to? - Trzeba zależność Maven Spring HATEOS - dostajemy jeszcze 1 wrapper
         // Dokumentacja GOOGLE: spring io overriding spring data REST Reposnse Handlers
-        return ResponseEntity.ok(repository.findAll());
+
+        // Korzystamy z asynchroniczności
+        return taskService.findAllAsync().thenApply(ResponseEntity::ok);
+
+        //return ResponseEntity.ok(repository.findAll());
     }
 
     // Jak chcemy stronicować w tym kontrolerze, trzeba nowy get mapping
