@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 //import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ import pl.todoapp.MarcinRogozToDoApp.model.Task;
 //import pl.todoapp.MarcinRogozToDoApp.model.SqlTaskRepository;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
@@ -32,6 +35,7 @@ import java.util.List;
 
 // Wiążemy kontroler z istniejącym repozytorium
 @RestController // Adnotacja Springowa - Repozytorium i Kontroler skanuje klasy przy uruchamianiu - zarządza nimi
+@RequestMapping("/tasks")   // Uproszczenie do metod - można usunąć /tasks
 class TaskController {
     // Pole prywatne - Repozytorium - na nim działamy
     // Spring nie wstrzykuje TaskRepository - tylko warstwę pośrednią
@@ -71,7 +75,7 @@ class TaskController {
     // W metodę wchodzimy tylko jeśli dostajemy jakieś parametry w URL
     // Jeżeli nie chcemy, żeby to tak działało to potrzebujemy dodać
     // Przed -> @GetMapping("/tasks")
-    @GetMapping(value = "/tasks", params = {"!sort", "!page", "!size"})
+    @GetMapping(params = {"!sort", "!page", "!size"})
     ResponseEntity<List<Task>> readAllTasks() {
         // Loggerem dajemy znać że wsyzstkie taski ujawnione
         // Dostajemy warning przy próbie GET w postman o treści Exposing all the tasks!
@@ -89,7 +93,7 @@ class TaskController {
     // Już po samym mappingu spring wywoła metodę
     // Dzięki temu mamy sortowanie i stronicowanie przechodzące przez stworzony kontroler
     // Nie możemy tutaj dac List<Task>
-    @GetMapping("/tasks")
+    @GetMapping
     ResponseEntity<?> readAllTasks(Pageable page) {
         // Spring dodaje coś w stylu HATEOS np content
         logger.info("Custom pageable!");
@@ -97,7 +101,7 @@ class TaskController {
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<Task> readTask(@PathVariable int id) {
         logger.info("Get Method!");
         return repository.findById(id)
@@ -105,8 +109,35 @@ class TaskController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Principal p - dostęp do użytkownika zalogowanego
+    // Servletowe metody
+    // Stara metoda
+    // Czasami warto jej używać ale niekoniecznie
+    @GetMapping("/test")
+    void old(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameter("foo");    // Pobieraj parametr
+
+    }
+
+
+    // Jeśli ktoś wyśle żądanie accept aplication json
+    // Chodzi o to żeby nie wymuszać trafienia w metodę
+     @GetMapping(value = "/search/done") // nie wymagamy parametrów ale jak ktoś je poda to obsługujemy
+     ResponseEntity<List<Task>> readDoneTasks(@RequestParam(defaultValue = "true") boolean state) { // Generalnie parametr jest wymagany, ale możemy określić domyślny
+        return ResponseEntity.ok(
+                repository.findByDone(state)
+        );
+    }
+
+    // Jeśli ktoś wyśle żądanie accept aplication xml
+    // @GetMapping(value = "/search/done", produces = MediaType.TEXT_XML_VALUE)
+    // String bar() { return "";}
+
+
+
+
     // Zwracamy nowy task
-    @PostMapping("/tasks")
+    @PostMapping
     ResponseEntity<Task> createTask(@RequestBody @Valid Task toCreate){
         logger.info("Post Method!");
         Task result = repository.save(toCreate);
@@ -119,7 +150,7 @@ class TaskController {
     // Ciało musi być zwalidowane @Valid
     // @Path Variable pozwala wziąć zmienną z id
     // Jeśli nazwa zmiennej nie jest taka sama jak w adresie to dajemy @PathVariable("nazwa_w_URL) nazwa_zmiennej
-    @PutMapping("/tasks/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -140,7 +171,7 @@ class TaskController {
     // Każda metoda z transactional ma begin i commit - metoda musi być publiczna
     // Musimy mieć beana aspektowego
     @Transactional
-    @PatchMapping("/tasks/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> toggleTask(@PathVariable int id) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
