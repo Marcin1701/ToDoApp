@@ -23,4 +23,7 @@ public interface TaskRepository {
     List<Task> findByDone(boolean done);
 
     boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);
+
+    // Użycie Query wygenerowanego przez springa
+    List<Task> findAllByGroup_Id(Integer groupId);
 }

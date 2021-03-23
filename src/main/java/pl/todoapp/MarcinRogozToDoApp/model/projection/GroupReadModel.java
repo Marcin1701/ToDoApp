@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 public class GroupReadModel {
 
+    private int id;
+
     private String description;
 
     /**
@@ -30,6 +32,8 @@ public class GroupReadModel {
                 .map(GroupTaskReadModel::new)
                 .collect(Collectors.toSet());
     }
+
+    public int getId() { return id; }
 
     public String getDescription() {
         return description;

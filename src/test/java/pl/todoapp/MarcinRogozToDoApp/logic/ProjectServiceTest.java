@@ -259,5 +259,10 @@ class ProjectServiceTest {
                     .filter(group -> !group.isDone())
                     .anyMatch(group -> group.getProject() != null && group.getProject().getId() == projectId);
         }
+
+        @Override
+        public List<Task> findAllTaskInGroup(final int id) {
+            return null;
+        }
     }
 }

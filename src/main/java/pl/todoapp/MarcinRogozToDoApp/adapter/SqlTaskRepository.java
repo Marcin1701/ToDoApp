@@ -36,7 +36,6 @@ interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer>
     @Override
     boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);
 
-
     // Jak sprytnie udostępnić kilka metod z repozytorium
 
     // Co jeśli nie chcemy mieć metod CRUDowych np delete lub save
