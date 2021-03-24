@@ -4,6 +4,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
+import pl.todoapp.MarcinRogozToDoApp.model.Project;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroup;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroupRepository;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
@@ -37,10 +38,16 @@ public class TaskGroupService {
         this.taskRepository = taskRepository;
     }
 
+    GroupReadModel createGroup(final GroupWriteModel source, final Project project) {
+        TaskGroup result = repository.save(source.toGroup(project));
+        return new GroupReadModel(result);
+    }
+
     public GroupReadModel createGroup(final GroupWriteModel source){
         // Jeśli nie wiemy co jest zwracane z funkcji po prawej stronie - lepiej zamiast var dawać od razu typ
-        TaskGroup result = repository.save(source.toGroup());
-        return new GroupReadModel(result);
+        //TaskGroup result = repository.save(source.toGroup());
+       // return new GroupReadModel(result);
+        return createGroup(source, null);
     }
 
     public List<GroupReadModel> readAll() {
@@ -65,5 +72,4 @@ public class TaskGroupService {
         // Zapis na samym końcu
         repository.save(result);
     }
-
 }

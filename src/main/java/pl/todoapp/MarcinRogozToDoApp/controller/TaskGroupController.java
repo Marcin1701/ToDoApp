@@ -61,6 +61,7 @@ class TaskGroupController {
         service.toggleGroup(id);
         return ResponseEntity.noContent().build();
     }
+    // TODO Zrobić mapowanie tasków niezrobionych oraz tasków na dzisiaj Zadanie na 6 Spring Web
 
     // Obsługa wyjątków
     @ExceptionHandler(IllegalArgumentException.class)

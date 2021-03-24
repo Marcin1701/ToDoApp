@@ -5,6 +5,7 @@ import pl.todoapp.MarcinRogozToDoApp.model.*;
 import pl.todoapp.MarcinRogozToDoApp.model.projection.GroupReadModel;
 import pl.todoapp.MarcinRogozToDoApp.model.projection.GroupTaskWriteModel;
 import pl.todoapp.MarcinRogozToDoApp.model.projection.GroupWriteModel;
+import pl.todoapp.MarcinRogozToDoApp.model.projection.ProjectWriteModel;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,8 +44,8 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public Project save(final Project toSave) {
-        return projectRepository.save(toSave);
+    public Project save(final ProjectWriteModel toSave) {
+        return projectRepository.save(toSave.toProject());
     }
 
     public GroupReadModel createGroup(LocalDateTime deadline, int projectId) {
@@ -68,7 +69,7 @@ public class ProjectService {
                                             }
                                     ).collect(Collectors.toSet())
                     );
-                    return service.createGroup(result);
+                    return service.createGroup(result, project);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
         return targetGroup;
     }
