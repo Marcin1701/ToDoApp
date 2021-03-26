@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.todoapp.MarcinRogozToDoApp.logic.ProjectService;
+import pl.todoapp.MarcinRogozToDoApp.model.Project;
 import pl.todoapp.MarcinRogozToDoApp.model.ProjectStep;
 import pl.todoapp.MarcinRogozToDoApp.model.projection.ProjectWriteModel;
 
@@ -14,6 +16,13 @@ import pl.todoapp.MarcinRogozToDoApp.model.projection.ProjectWriteModel;
 // Po wejściu na strone pod adres projects - kontroler się uruchamia
 public class ProjectController {
 
+    private final ProjectService service;
+
+    public ProjectController(final ProjectService service) {
+        this.service = service;
+    }
+
+
     // Zwróć żądanie http zmapowaną na metodę
     // Jeśli spring dostaje zwrotkę String
     // To renderuje szablon z templates
@@ -21,6 +30,16 @@ public class ProjectController {
     String showProjects(Model model) {
         // Ten model chcemy zachowac
         model.addAttribute("project", new ProjectWriteModel());
+        return "projects";
+    }
+
+    // Metoda dodaje projekt - domyślny post submit
+    @PostMapping
+    String addProject(@ModelAttribute("project") ProjectWriteModel current, Model model) {
+        // Dodanie projektu do bazy
+        service.save(current);
+        model.addAttribute("project", new ProjectWriteModel());
+        model.addAttribute("message", "Dodano projekt!");
         return "projects";
     }
 

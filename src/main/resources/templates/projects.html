@@ -8,6 +8,11 @@
 </head>
 <body>
     <main>
+        <!--/*@thymesVar id="project" type="java.lang.String"*/-->
+        <!-- Bierzemy atrybut z modelu i go wyświeltamy -->
+        <!-- th:if mówi kiedy dany znacznik ma się pojawić -->
+        <!-- Message pojawia się tylko wtedy kiedy jest różne od nulla -->
+        <h1 th:if="${message != null}" th:text="${message}"></h1>
         <!-- th:action pozwala na definiowanie akcji w formularzu
          nadpisanie tego co wpisane jest w method
          w th można podać wyrażenia
