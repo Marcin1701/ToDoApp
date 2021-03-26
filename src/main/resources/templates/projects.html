@@ -25,14 +25,19 @@
                 <!-- chodzi o model jako łącznik między kontrolerem a widokiem -->
                 <input type="text" th:field="*{description}"/>
             </label>
-                <fieldset>
-                    <legend>Krok 1</legend>
+                <!-- Dla każdego kroku możemy wygenerować fieldset -->
+                <!-- ':' - zwraca nam też statystyki dotyczące kroków -->
+                <fieldset th:each="step, stepStat : *{steps}">
+                    <!-- Legend wygeneruje nam indeksy od 0 do x w zależności od tego ile mamy kroków -->
+                    <legend th:text="|Krok ${stepStat.index + 1}|"></legend>
+                    <!--<legend>Krok 1</legend>-->
                     <label>Opis
                         <!-- nie dostaniemy null pointer exception bo wiemy, że istnieje krok - dodajemy go w konstruktorze -->
-                        <input type="text" th:field="*{steps[0].description}" />
+                        <!-- Żeby użyć indeksów trzeba dodać __${stepStat.index}__ -->
+                        <input type="text" th:field="*{steps[__${stepStat.index}__].description}" />
                     </label>
                     <label>Dni do końca projektu
-                        <input type="text" th:field="*{steps[0].daysToDeadLine}" />
+                        <input type="text" th:field="*{steps[__${stepStat.index}__].daysToDeadLine}" />
                     </label>
                 </fieldset>
         </fieldset>
