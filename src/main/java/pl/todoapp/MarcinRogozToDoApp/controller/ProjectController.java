@@ -16,9 +16,7 @@ public class ProjectController {
     // To renderuje szablon z templates
     @GetMapping         // interfejs model pozwala na komunikację z kontrolerem
     String showProjects(Model model) {
-        var tempProject = new ProjectWriteModel();
-        tempProject.setDescription("testowanie");
-        model.addAttribute("project", tempProject);
+        model.addAttribute("project", new ProjectWriteModel());
         return "projects";
     }
 }

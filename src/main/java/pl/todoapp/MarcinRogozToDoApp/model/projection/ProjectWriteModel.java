@@ -5,6 +5,7 @@ import pl.todoapp.MarcinRogozToDoApp.model.ProjectStep;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -14,8 +15,12 @@ public class ProjectWriteModel {
     @NotBlank(message = "Project's description must not be empty!")
     private String description;
 
+    public ProjectWriteModel() {
+        steps.add(new ProjectStep());
+    }
+
     @Valid
-    private List<ProjectStep> steps;
+    private List<ProjectStep> steps = new ArrayList<>();
 
     public String getDescription() {
         return description;

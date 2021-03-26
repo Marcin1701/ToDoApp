@@ -25,6 +25,16 @@
                 <!-- chodzi o model jako łącznik między kontrolerem a widokiem -->
                 <input type="text" th:field="*{description}"/>
             </label>
+                <fieldset>
+                    <legend>Krok 1</legend>
+                    <label>Opis
+                        <!-- nie dostaniemy null pointer exception bo wiemy, że istnieje krok - dodajemy go w konstruktorze -->
+                        <input type="text" th:field="*{steps[0].description}" />
+                    </label>
+                    <label>Dni do końca projektu
+                        <input type="text" th:field="*{steps[0].daysToDeadLine}" />
+                    </label>
+                </fieldset>
         </fieldset>
         </form>
     </main>
