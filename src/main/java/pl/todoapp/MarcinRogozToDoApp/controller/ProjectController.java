@@ -1,8 +1,10 @@
 package pl.todoapp.MarcinRogozToDoApp.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.todoapp.MarcinRogozToDoApp.model.projection.ProjectWriteModel;
 
 @Controller
 @RequestMapping("/projects")    // Nazwa jak w pliku html
@@ -12,8 +14,11 @@ public class ProjectController {
     // Zwróć żądanie http zmapowaną na metodę
     // Jeśli spring dostaje zwrotkę String
     // To renderuje szablon z templates
-    @GetMapping
-    String showProjects() {
+    @GetMapping         // interfejs model pozwala na komunikację z kontrolerem
+    String showProjects(Model model) {
+        var tempProject = new ProjectWriteModel();
+        tempProject.setDescription("testowanie");
+        model.addAttribute("project", tempProject);
         return "projects";
     }
 }

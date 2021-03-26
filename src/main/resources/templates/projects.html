@@ -13,11 +13,17 @@
          w th można podać wyrażenia
          adresy definujemy @, czyli gdzie uderzamy action
          trzeba dodać post mapping do kontrolera project -->
-        <form action="#" method="post" th:action="@{/projects}">
+
+        <!-- musimy powiedzieć formularzowi jaki obiekt jest obecnie procesowany -->
+        <!--/*@thymesVar id="project" type="pl.todoapp.MarcinRogozToDoApp.model.projection.ProjectWriteModel"*/-->
+        <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
         <fieldset>
             <legend>Nowy Projekt</legend>
             <label>Opis
-                <input type="text" />
+                                           <!-- pole z opisem -->
+                <!-- skąd mamy wiedzieć że project jest w HTML - skąd go wziąć - odpowiedzią jest MVC -->
+                <!-- chodzi o model jako łącznik między kontrolerem a widokiem -->
+                <input type="text" th:field="*{description}"/>
             </label>
         </fieldset>
         </form>
