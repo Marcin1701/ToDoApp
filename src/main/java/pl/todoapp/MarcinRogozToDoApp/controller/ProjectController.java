@@ -1,18 +1,17 @@
 package pl.todoapp.MarcinRogozToDoApp.controller;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.todoapp.MarcinRogozToDoApp.logic.ProjectService;
 import pl.todoapp.MarcinRogozToDoApp.model.Project;
 import pl.todoapp.MarcinRogozToDoApp.model.ProjectStep;
 import pl.todoapp.MarcinRogozToDoApp.model.projection.ProjectWriteModel;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -57,6 +56,23 @@ public class ProjectController {
         return "projects";
     }
 
+    @PostMapping("/{id}")
+    String createGroup(
+            @ModelAttribute("project") ProjectWriteModel current,    // aktualny model
+            Model model,    // komunikaty dodatkowe
+            @PathVariable int id,
+            @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime deadline  // specyficzny format zapisu - Spring oferuje adnotację
+    )
+    {
+        try {
+            service.createGroup(deadline, id);
+            model.addAttribute("message", "Dodano grupę!");
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            model.addAttribute("message", "Błąd podczas tworzenia grupy!");
+        }
+        return "projects";
+    }
     // Post reaguje wtedy kiedy pojawia się parametr addStep
     @PostMapping(params = "addStep")    // Parametr pochodzący z modelu project
     String addProjectStep(@ModelAttribute("project") ProjectWriteModel current) {

@@ -43,6 +43,15 @@
                 <ul class="P(0)">
                     <li th:each="step : ${project.steps}" th:text="|${step.description} (${step.daysToDeadLine} dni)|"></li>
                 </ul>
+                <!--                               projects/dodajemy parametr(czym jest parametr) -->
+                <form action="#" method="post" th:action="@{/projects/{projectId}(projectId=${project.id})}">
+                    <!-- Czasami się da w przeglądarce, a czasami nie da -->
+                    <label>Deadline
+                        <!-- nie mamy tego w kontrolerze - dajemy name i możemy odczytać -->
+                        <input name="deadline" type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
+                    </label>
+                    <button type="submit">Utwórz taski >></button>
+                </form>
             </dd>
         </dl>
 
