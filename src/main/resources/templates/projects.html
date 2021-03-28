@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo App: projects</title>
     <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
+    <!-- Atomic CSS -->
+    <style>
+        .Bd {
+            border: solid 1px black;
+        }
+        .P\(0\) {
+            padding: 0;
+        }
+        .P\(10px\) {
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
     <main>
@@ -16,12 +28,12 @@
 
         <!-- Powtarzamy listę tyle razy ile jest projektów -->
         <!--/*@thymesVar id="projects" type="pl.todoapp.MarcinRogozToDoApp.model.Project"*/-->
-        <dl th:each="project : ${projects}">
+        <dl th:each="project : ${projects}" class="Bd P(10px)">
             <!-- Thymeleaf procesuje szablon zanim jest on zwracany do użytkownika -->
             <dt th:text="${project.description}">...</dt>
             <!-- zamiast pisać wszędzie th:if można pisać data-th-if - wtedy nie musimy dawać xmlns:th="http://www.thymeleaf.org" -->
             <dd>
-                <ul>
+                <ul class="P(0)">
                     <li th:each="step : ${project.steps}" th:text="|${step.description} (${step.daysToDeadLine} dni)|"></li>
                 </ul>
             </dd>
@@ -63,12 +75,12 @@
                 <!-- dodaje przycisk + do dodania projektu -->
                 <button type="submit" name="addStep">+</button>
             </div>
-        </fieldset>
             <!-- Dodajemy 2 przyciski -->
             <p>
                 <button type="submit">Dodaj</button>
                 <button type="reset">Wyczyść</button>
             </p>
+        </fieldset>
         </form>
     </main>
 </body>
