@@ -52,6 +52,10 @@ public class ProjectController {
         // Dodanie projektu do bazy
         service.save(current);
         model.addAttribute("project", new ProjectWriteModel());
+
+        // Pomijamy cachowanie - nowy projekt będzie widoczny od razu po dodaniu
+        model.addAttribute("projects", getProjects());
+
         model.addAttribute("message", "Dodano projekt!");
         return "projects";
     }
@@ -85,6 +89,12 @@ public class ProjectController {
     // Metoda zawsze dostarcza projekty
     // Bez tego zawsze trzeba zwracać projekt - tak jest lepiej
     // Dla wystąpienia atrybutu projects w HTML zwróć listę
+
+    // UWAGA problem - jesli dodajemy nowy projekt i wyślemy formularz - "Dodaj"
+    // Nowy projekt nie będzie widoczny na głównej stronie zaraz po dodaniu
+    // Spring cachuje - stara się nie pytać zbyt często BD
+    // Jeśli nie chcemy tego - od razu widoczne
+    // Dodajemy
     @ModelAttribute("projects")
     List<Project> getProjects() {
         return service.readAll();

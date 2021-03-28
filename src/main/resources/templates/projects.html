@@ -43,7 +43,7 @@
                 <ul class="P(0)">
                     <li th:each="step : ${project.steps}" th:text="|${step.description} (${step.daysToDeadLine} dni)|"></li>
                 </ul>
-                <!--                               projects/dodajemy parametr(czym jest parametr) -->
+                <!--                               projects/dodajemy parametr(czym jest parametr) // Przekierowanie do projects/id -->
                 <form action="#" method="post" th:action="@{/projects/{projectId}(projectId=${project.id})}">
                     <!-- Czasami się da w przeglądarce, a czasami nie da -->
                     <label>Deadline
