@@ -5,6 +5,7 @@ import pl.todoapp.MarcinRogozToDoApp.model.TaskGroup;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,9 @@ public class GroupReadModel {
         description = source.getDescription();
         source.getTasks().stream()
                 .map(Task::getDeadline)
+                // Jeśli nie ma deadline (null) i robimy compare to dostaniemy nullpointerexception
+                // Odfiltrujemy sobie nulle
+                .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo)
                 .ifPresent(date -> deadline = date);
         tasks = source.getTasks()
