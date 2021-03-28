@@ -16,6 +16,13 @@
         .P\(10px\) {
             padding: 10px;
         }
+        .Bdc\(red\) {
+            border-color: red !important;
+        }
+        .C\(red\) {
+            color: red;
+        }
+
     </style>
 </head>
 <body>
@@ -48,13 +55,16 @@
         <!-- musimy powiedzieć formularzowi jaki obiekt jest obecnie procesowany -->
         <!--/*@thymesVar id="project" type="pl.todoapp.MarcinRogozToDoApp.model.projection.ProjectWriteModel"*/-->
         <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
+            <!-- Jeżeli w formularzu mamy błąd -->
+            <!-- Pola błędne będą w kolorze czerwonym! -->
+            <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
         <fieldset>
             <legend>Nowy Projekt</legend>
             <label>Opis
                                            <!-- pole z opisem -->
                 <!-- skąd mamy wiedzieć że project jest w HTML - skąd go wziąć - odpowiedzią jest MVC -->
                 <!-- chodzi o model jako łącznik między kontrolerem a widokiem -->
-                <input type="text" th:field="*{description}"/>
+                <input type="text" th:field="*{description}" th:errorclass="'Bdc(red)'"/>
             </label>
                 <!-- Dla każdego kroku możemy wygenerować fieldset -->
                 <!-- ':' - zwraca nam też statystyki dotyczące kroków -->
@@ -65,10 +75,10 @@
                     <label>Opis
                         <!-- nie dostaniemy null pointer exception bo wiemy, że istnieje krok - dodajemy go w konstruktorze -->
                         <!-- Żeby użyć indeksów trzeba dodać __${stepStat.index}__ -->
-                        <input type="text" th:field="*{steps[__${stepStat.index}__].description}" />
+                        <input type="text" th:field="*{steps[__${stepStat.index}__].description}" th:errorclass="'Bdc(red)'"/>
                     </label>
                     <label>Dni do końca projektu
-                        <input type="number" th:field="*{steps[__${stepStat.index}__].daysToDeadLine}" />
+                        <input type="number" th:field="*{steps[__${stepStat.index}__].daysToDeadLine}" th:errorclass="'Bdc(red)'"/>
                     </label>
                 </fieldset>
             <div>

@@ -2,6 +2,7 @@ package pl.todoapp.MarcinRogozToDoApp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import pl.todoapp.MarcinRogozToDoApp.model.Project;
 import pl.todoapp.MarcinRogozToDoApp.model.ProjectStep;
 import pl.todoapp.MarcinRogozToDoApp.model.projection.ProjectWriteModel;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -36,8 +38,18 @@ public class ProjectController {
     }
 
     // Metoda dodaje projekt - domyślny post submit
+    // Dodajemy walidację - skupiamy się na kontrolerze projektu
+    // Technika do walidacji Binding Result
     @PostMapping
-    String addProject(@ModelAttribute("project") ProjectWriteModel current, Model model) {
+    String addProject(@ModelAttribute("project") @Valid ProjectWriteModel current,
+                      BindingResult bindingResult,
+                      Model model)
+    {
+        // Jeśli binding zawiera błędy wróć do widoku głównego
+        // Thymeleaf zwróci nam błąd
+        if (bindingResult.hasErrors()){
+            return "projects";
+        }
         // Dodanie projektu do bazy
         service.save(current);
         model.addAttribute("project", new ProjectWriteModel());
