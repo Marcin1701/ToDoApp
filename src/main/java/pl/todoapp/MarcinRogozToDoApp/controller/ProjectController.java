@@ -11,6 +11,8 @@ import pl.todoapp.MarcinRogozToDoApp.model.Project;
 import pl.todoapp.MarcinRogozToDoApp.model.ProjectStep;
 import pl.todoapp.MarcinRogozToDoApp.model.projection.ProjectWriteModel;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/projects")    // Nazwa jak w pliku html
 // Po wejściu na strone pod adres projects - kontroler się uruchamia
@@ -51,4 +53,12 @@ public class ProjectController {
         return "projects";
     }
 
+
+    // Metoda zawsze dostarcza projekty
+    // Bez tego zawsze trzeba zwracać projekt - tak jest lepiej
+    // Dla wystąpienia atrybutu projects w HTML zwróć listę
+    @ModelAttribute("projects")
+    List<Project> getProjects() {
+        return service.readAll();
+    }
 }

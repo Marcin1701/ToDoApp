@@ -13,6 +13,20 @@
         <!-- th:if mówi kiedy dany znacznik ma się pojawić -->
         <!-- Message pojawia się tylko wtedy kiedy jest różne od nulla -->
         <h1 th:if="${message != null}" th:text="${message}"></h1>
+
+        <!-- Powtarzamy listę tyle razy ile jest projektów -->
+        <!--/*@thymesVar id="projects" type="pl.todoapp.MarcinRogozToDoApp.model.Project"*/-->
+        <dl th:each="project : ${projects}">
+            <!-- Thymeleaf procesuje szablon zanim jest on zwracany do użytkownika -->
+            <dt th:text="${project.description}">...</dt>
+            <!-- zamiast pisać wszędzie th:if można pisać data-th-if - wtedy nie musimy dawać xmlns:th="http://www.thymeleaf.org" -->
+            <dd>
+                <ul>
+                    <li th:each="step : ${project.steps}" th:text="|${step.description} (${step.daysToDeadLine} dni)|"></li>
+                </ul>
+            </dd>
+        </dl>
+
         <!-- th:action pozwala na definiowanie akcji w formularzu
          nadpisanie tego co wpisane jest w method
          w th można podać wyrażenia
