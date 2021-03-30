@@ -1,8 +1,10 @@
 package pl.todoapp.MarcinRogozToDoApp.model.projection;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import pl.todoapp.MarcinRogozToDoApp.model.Task;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroup;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 // Są to podzbiory umożliwiające utworzenie pełnoprawnych tasków - używane w serwisach
@@ -10,8 +12,10 @@ public class GroupTaskWriteModel {
 
     // JEST TO DTO - data transfer object - używany do przesyłania danych w bezpieczny sposób
 
+    @NotBlank(message = "Tasks description must not be empty")
     private String description;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime deadline;
 
     public String getDescription() {
@@ -28,10 +32,6 @@ public class GroupTaskWriteModel {
 
     public void setDeadline(final LocalDateTime deadline) {
         this.deadline = deadline;
-    }
-
-    public Task toTask() {
-        return new Task(this.description, this.deadline);
     }
 
     Task toTask(final TaskGroup group) {

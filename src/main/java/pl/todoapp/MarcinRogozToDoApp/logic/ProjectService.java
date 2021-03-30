@@ -67,7 +67,7 @@ public class ProjectService {
                                             task.setDeadline(deadline.plusDays(step.getDaysToDeadLine()));
                                             return task;
                                             }
-                                    ).collect(Collectors.toSet())
+                                    ).collect(Collectors.toList())
                     );
                     return service.createGroup(result, project);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));

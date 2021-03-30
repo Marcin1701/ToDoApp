@@ -35,9 +35,9 @@
             if (response.ok) {  // Status z serii 200
                 const tasks = await response.json();    // Format - JSON
                 const list = document.createElement('ul');
-                tasks.array.forEach(task => {   // Dla każdego taska tworzymy HTML
+                tasks.forEach(task =>    // Dla każdego taska tworzymy HTML
                     list.appendChild(createTask(task))
-                });
+                );
                 main.prepend(list);
             }
             const form = document.querySelector('form');
