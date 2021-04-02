@@ -89,21 +89,11 @@ class TaskGroupController {
     }
 
     @ResponseBody
-    @Transactional
+    @Transactional  // Takie oznaczenia pozwalają springowi znaleźć metody oznaczane taką adnotacją
     @PatchMapping("/{id}")
     public ResponseEntity<?> toggleGroup(@PathVariable int id) {
         service.toggleGroup(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String> handleIllegalState(IllegalStateException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
     @ModelAttribute("groups")
