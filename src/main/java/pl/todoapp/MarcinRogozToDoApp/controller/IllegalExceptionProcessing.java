@@ -10,6 +10,4 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)    // Jak długo adnotacja ma pozostawać, domyślnie parametr leci do value
 @interface IllegalExceptionProcessing {
-
-
 }

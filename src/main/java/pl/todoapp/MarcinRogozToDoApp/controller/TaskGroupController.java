@@ -30,6 +30,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
+@IllegalExceptionProcessing
 @RequestMapping("/groups")
 class TaskGroupController {
     private static final Logger logger = LoggerFactory.getLogger(TaskGroupController.class);
@@ -85,6 +86,7 @@ class TaskGroupController {
     @ResponseBody
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<Task>> readAllTasksFromGroup(@PathVariable int id) {
+        var x = repository.findAllByGroup_Id(id);
         return ResponseEntity.ok(repository.findAllByGroup_Id(id));
     }
 
