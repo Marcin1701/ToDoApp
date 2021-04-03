@@ -2,9 +2,14 @@ package pl.todoapp.MarcinRogozToDoApp.aspect;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 // Klasa obsługuje aspekty
@@ -12,6 +17,9 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 class LogicAspect {
+
+    public static final Logger logger = LoggerFactory.getLogger(LogicAspect.class);
+
     // Tworzymy timer
     private final Timer projectCreateGroupTimer;
 
@@ -21,13 +29,27 @@ class LogicAspect {
         projectCreateGroupTimer = registry.timer("logic.project.create.group");
     }
 
+    @Pointcut("execution(* pl.todoapp.MarcinRogozToDoApp.logic.ProjectService.createGroup(..))")
+    static void projectServiceCreateGroup() {
+        // Ta metoda zwróci faktycznie punkt przecięcia - połączy sobie @Before i @Around
+        // Jak sobie to wyniesiemy to trudniej zrobić literówkę
+    }
+
+    // Metoda wykonywana przed createGroup
+    // Jest tutaj długi String - możemy to uwspólnić @Pointcut
+    @Before("projectServiceCreateGroup()")
+    void logMethodCall(JoinPoint jp) {
+        // Połączyliśmy aspekt z metodą createGroup
+        logger.info("Before {} with {}", jp.getSignature().getName(), jp.getArgs());
+    }
+
     // Różne aspekty
     // Zapinamy się dookoła createGroup
     // ProceedingJointPoint to punkt łączenia z logiką
     // Nie przenosimy logiki do aspektów, raczej niefunkcjonalne rzeczy, logowanie, metryki
     // Gwiazdka oznacza dowolny typ zwracany - dwie kropki to jakiekolwiek parametry
     // Można dawać && @annotation(Override) - precyzować dokładnie jakie metody nas interesują ( z adnotacją override)
-    @Around("execution(* pl.todoapp.MarcinRogozToDoApp.logic.ProjectService.createGroup(..))") // Coś co pozwala nam zatrzymać się wywołanie dookoła którego przygotujemy logikę np dodajemy wartość do cache
+    @Around("projectServiceCreateGroup()") // Coś co pozwala nam zatrzymać się wywołanie dookoła którego przygotujemy logikę np dodajemy wartość do cache
 
     // 1. Zatrzymujemy się na chwilę przed wykonaniem metody
     // 2. Dodajemy sobie w tym przypadku Timer
