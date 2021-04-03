@@ -182,6 +182,8 @@ class TaskController {
     // Metoda patch - po jej wykonaniu odwracamy stan taska z done na !done
     // Każda metoda z transactional ma begin i commit - metoda musi być publiczna
     // Musimy mieć beana aspektowego
+
+    // Transactional jest elementem programowania aspektowego
     @Transactional
     @PatchMapping("/{id}")
     public ResponseEntity<?> toggleTask(@PathVariable int id) {

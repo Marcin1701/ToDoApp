@@ -1,5 +1,6 @@
 package pl.todoapp.MarcinRogozToDoApp.controller;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,6 +61,12 @@ public class ProjectController {
         return "projects";
     }
 
+    // Micrometer służy do mierzenia różnych rzeczy
+    // Mierzymy czas - przechowujemy histogram - wartość określa dla których właściwości chcemy mieć jakieś miary
+    // Możemy mierzyć jak aplikacja działa dla użytkowników
+    // Metody z taką adnotacją wysyłają metryki
+    // Jeśli wołamy przez springa metodę to aspekty są dodane - jeżeli przekierujemy do metody createGroup to nie zadziała
+    @Timed(value = "project.create.group", histogram = true, percentiles = {0.5, 0.95, 0.99})
     @PostMapping("/{id}")
     String createGroup(
             @ModelAttribute("project") ProjectWriteModel current,    // aktualny model
