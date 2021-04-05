@@ -14,4 +14,6 @@ public interface TaskGroupRepository {
     boolean existsByDoneIsFalseAndProject_Id(Integer groupId);
 
     List<Task> findAllTaskInGroup(int id);
+
+    boolean existsByDescription(String description);
 }

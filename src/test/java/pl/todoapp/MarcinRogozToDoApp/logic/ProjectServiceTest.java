@@ -264,5 +264,10 @@ class ProjectServiceTest {
         public List<Task> findAllTaskInGroup(final int id) {
             return null;
         }
+
+        @Override
+        public boolean existsByDescription(final String description) {
+            return map.values().stream().anyMatch(x -> x.getDescription().equals(description));
+        }
     }
 }
