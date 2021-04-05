@@ -4,6 +4,7 @@ import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 //import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -43,6 +44,9 @@ class TaskController {
     // Spring nie wstrzykuje TaskRepository - tylko warstwę pośrednią
     private final TaskRepository repository;
 
+    // Obsługa zdarzeń w kontrolerze
+    private final ApplicationEventPublisher eventPublisher;
+
     // Dodajemy nowy obiekt TaskService
     private final TaskService taskService;
 
@@ -53,14 +57,14 @@ class TaskController {
     // Spring najpierw tworzy TaskRepository, a dopiero potem wstrzukuje go do TaskController
     // Adotacja @Autowired była kiedyś potrzebna - teraz już nie
     // Jak to wykorzystać - np nadpisać metodę zwracającą Taski
-
     // Żeby naprawić błąd dwóch sqlTaskRepository - możemy dawać - wiążemy się ze springiem @Qualifier, można lepiej
     // Qualifier zepsułby testy
     // TaskController(@Qualifier("sqlTaskRepository") final TaskRepository repository)
     // Adnotacja @Lazy - bean ma być leniwie dodawany
     // Np repozytorium ma implementację i 1 zależy od 2 a 2 od 1, brzydkie obejście to dodanie @Lazy w 1 miejscu
-    TaskController(final TaskRepository repository, final TaskService taskService) {
+    TaskController(final TaskRepository repository, final ApplicationEventPublisher eventPublisher, final TaskService taskService) {
         this.repository = repository;
+        this.eventPublisher = eventPublisher;
         this.taskService = taskService;
     }
 
@@ -184,13 +188,18 @@ class TaskController {
     // Musimy mieć beana aspektowego
 
     // Transactional jest elementem programowania aspektowego
+    // Dobrze, że jest Transactional - trzeba tak
+    // Gdyby to nie było w transakcji to zapis mógłby się udać a wysłanie zdarzenia może się nie udać
+    // Metoda, która wysyła zdarzenie i zmienia stan na bazie musi mieć transactional
     @Transactional
     @PatchMapping("/{id}")
     public ResponseEntity<?> toggleTask(@PathVariable int id) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        repository.findById(id).ifPresent(task -> task.setDone(!task.isDone()));
+        repository.findById(id)
+                .map(Task::toggle)
+                .ifPresent(eventPublisher::publishEvent);
         // Jeśli nie zostanie zwrócony obiekt/zmienna to transakcja nie zostanie wykonana
         // i zapisana w DB, np po rzuceniu wyjątku w tym miejscu (albo innym)
         // throw new RuntimeException();
