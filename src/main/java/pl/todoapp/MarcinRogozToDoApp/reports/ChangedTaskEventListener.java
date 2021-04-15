@@ -3,6 +3,7 @@ package pl.todoapp.MarcinRogozToDoApp.reports;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pl.todoapp.MarcinRogozToDoApp.model.event.TaskDone;
 import pl.todoapp.MarcinRogozToDoApp.model.event.TaskEvent;
@@ -21,11 +22,13 @@ public class ChangedTaskEventListener {
         this.repository = repository;
     }
     // spring po typie domyśli się czego ma nasłuchiwać
+    @Async  // procesowanie zdarzenia jest asynchroniczne
     @EventListener
     public void on(TaskDone event){
        onChanged(event);
     }
 
+    @Async  // procesowanie zdarzenia jest asynchroniczne
     @EventListener
     public void on(TaskUndone event){
         onChanged(event);
