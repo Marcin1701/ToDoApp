@@ -8,88 +8,88 @@
     <title>TodoApp - groups</title>
 </head>
 <body>
-    <main>
-        <fieldset>
-            <form>
-                <label>Opis
-                    <input type="text" name="description" />
-                </label>
-                <label>
-                    <input type="datetime-local" name="deadline" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
-                </label>
-                <button type="submit">Dodaj!</button>
-            </form>
-        </fieldset>
-    </main>
-    <script>
-        (async function() {
-            // Znajdujemy main na stronie
-            const main = document.querySelector('main');
-            // Reagujemy na locationsearch
-            const params = new URLSearchParams(location.search);
-            // Jeśli znajduje się - dociągamy taski z jednego endpointa
-            // Fetch to strzał do backendu - mini postman w przeglądarce
-            // Akcja jest odroczona w czasie
-            // Na każde odroczone w czasie zdarzenie - obietnica, promise - można zaczekać
-            const response = params.has('group') ? await fetch(`/groups/${params.get('group')}`) : await fetch('/tasks');
-            if (response.ok) {  // Status z serii 200
-                const tasks = await response.json();    // Format - JSON
-                const list = document.createElement('ul');
-                tasks.forEach(task =>    // Dla każdego taska tworzymy HTML
-                    list.appendChild(createTask(task))
-                );
-                main.prepend(list);
-            }
-            const form = document.querySelector('form');
-            // Znajdujemy formularz i podpinamy submita
-            form.addEventListener('submit', async (event) => {
-                // Nie chcemy żeby przeglądarka się przeładowała
-                // i żeby poszedł POST
-                // Zabiezpieczenie przed domyślnym proceosowaniem formularza
-                event.preventDefault();
-                const resp = await fetch('/tasks', {
-                    method: 'post',
-                    headers: {
-                        'Accept': 'application/json',   // Wysyłamy JSON
-                        'Content-Type': 'application/json'  // Oczekujemy JSON
-                    },
-                    body: JSON.stringify({
-                        // DOM - każdy tag w html ma swoje odzwierciedlenie w obiekcie JS
-                        // Każdy formularz ma elements
-                        description: form.elements.description.value,
-                        deadline: form.elements.deadline.value && form.elements.deadline.value + ':00.000'
-                    })
-                });
-                if (resp.ok){
-                    // Ciało nowego taska
-                    const taskFromServer = await resp.json();
-                    // Podpinamy otrzymany task do listy i na front
-                    document.querySelector('ul').appendChild(createTask(taskFromServer));
-                    form.reset();
-                }
+<main>
+    <fieldset>
+        <form>
+            <label>Opis
+                <input type="text" name="description" />
+            </label>
+            <label>
+                <input type="datetime-local" name="deadline" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
+            </label>
+            <button type="submit">Dodaj!</button>
+        </form>
+    </fieldset>
+</main>
+<script>
+    (async function() {
+        // Znajdujemy main na stronie
+        const main = document.querySelector('main');
+        // Reagujemy na locationsearch
+        const params = new URLSearchParams(location.search);
+        // Jeśli znajduje się - dociągamy taski z jednego endpointa
+        // Fetch to strzał do backendu - mini postman w przeglądarce
+        // Akcja jest odroczona w czasie
+        // Na każde odroczone w czasie zdarzenie - obietnica, promise - można zaczekać
+        const response = params.has('group') ? await fetch(`/groups/${params.get('group')}`) : await fetch('/tasks');
+        if (response.ok) {  // Status z serii 200
+            const tasks = await response.json();    // Format - JSON
+            const list = document.createElement('ul');
+            tasks.forEach(task =>    // Dla każdego taska tworzymy HTML
+                list.appendChild(createTask(task))
+            );
+            main.prepend(list);
+        }
+        const form = document.querySelector('form');
+        // Znajdujemy formularz i podpinamy submita
+        form.addEventListener('submit', async (event) => {
+            // Nie chcemy żeby przeglądarka się przeładowała
+            // i żeby poszedł POST
+            // Zabiezpieczenie przed domyślnym proceosowaniem formularza
+            event.preventDefault();
+            const resp = await fetch('/tasks', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',   // Wysyłamy JSON
+                    'Content-Type': 'application/json'  // Oczekujemy JSON
+                },
+                body: JSON.stringify({
+                    // DOM - każdy tag w html ma swoje odzwierciedlenie w obiekcie JS
+                    // Każdy formularz ma elements
+                    description: form.elements.description.value,
+                    deadline: form.elements.deadline.value && form.elements.deadline.value + ':00.000'
+                })
             });
+            if (resp.ok){
+                // Ciało nowego taska
+                const taskFromServer = await resp.json();
+                // Podpinamy otrzymany task do listy i na front
+                document.querySelector('ul').appendChild(createTask(taskFromServer));
+                form.reset();
+            }
+        });
 
-            // Stwórz taska
-            function createTask({id, description, deadline, done}) {
-                // Tworzymy bazowy element typu li
-                const result = document.createElement('li');
-                result.innerHTML = `
+        // Stwórz taska
+        function createTask({id, description, deadline, done}) {
+            // Tworzymy bazowy element typu li
+            const result = document.createElement('li');
+            result.innerHTML = `
                     <label>
                         <input type="checkbox" ${done ? ' checked' : ''} />
                         ${description}
                         <small>${deadline && deadline.replace('T', ' ')}</small>
                     </label>
                 `;
-                // Jak ktoś kliknie w checkboxa to odświeżamy
-                result.querySelector('input').addEventListener('click', async (e) => {
-                    const response = await fetch(`/tasks/{id}`, { method: 'PATCH'});
-                    if (!response.ok) {
-                        e.target.checked = !e.target.checked;
-                    }
-                });
-                return result;
-            }
-        })();
-    </script>
+            // Jak ktoś kliknie w checkboxa to odświeżamy
+            result.querySelector('input').addEventListener('click', async (e) => {
+                const response = await fetch(`/tasks/${id}`, { method: 'PATCH'});
+                if (!response.ok) {
+                    e.target.checked = !e.target.checked;
+                }
+            });
+            return result;
+        }
+    })();
+</script>
 </body>
 </html>
