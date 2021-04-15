@@ -13,5 +13,10 @@ management:
       exposure:
         include: '*'
 task.template.allowMultipleTasks: false
-
+keycloak:
+  auth-server-url: 'http://localhost:8180/auth' # Adres keycloak
+  # Obszar keycloak
+  realm: 'TodoApp'
+  resource: 'todo-spring-client'
+  public-client: true
 

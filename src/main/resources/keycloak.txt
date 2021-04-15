@@ -7,3 +7,5 @@ Polecenie:
 standalone.bat -Djboss.socket.binding.port-offset=100
 
 Aplikacja na porcie: 8180
+
+KeyCloak wspiera RBAS
