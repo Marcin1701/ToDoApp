@@ -2,6 +2,8 @@ package pl.todoapp.MarcinRogozToDoApp.controller;
 
 import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,8 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// Autoryzacja na kontrolerze
+@PreAuthorize("hasRole('ROLE_ADMIN')")  // Dostęp tylko jeśli posiadamy odpowiednią rolę
 @Controller
 @RequestMapping("/projects")    // Nazwa jak w pliku html
 // Po wejściu na strone pod adres projects - kontroler się uruchamia
@@ -31,10 +35,23 @@ public class ProjectController {
     // Jeśli spring dostaje zwrotkę String
     // To renderuje szablon z templates
     @GetMapping         // interfejs model pozwala na komunikację z kontrolerem
-    String showProjects(Model model) {
-        // Ten model chcemy zachowac
-        model.addAttribute("project", new ProjectWriteModel());
-        return "projects";
+
+    // Spring security - po uwierzytelnieniu mamy dostęp
+    String showProjects(Model model, Authentication auth) {
+        // Jeśli mam preauthorize to można bez tego
+        //if (auth == null || !auth.isAuthenticated()){
+        //    return "index";
+        //}
+        // Przez authentication mamy dostęp do danych użytkownika
+        // Sprawdzamy czy zalogowany użytkownik ma rolę administratora
+        // Uwaga jak nie będzie auth to poleci nullpointer
+        // Często obsługę authentication wynosi się do serwisów
+        //if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            // Ten model chcemy zachowac
+            model.addAttribute("project", new ProjectWriteModel());
+            return "projects";
+       // }
+        //return "index";
     }
 
     // Metoda dodaje projekt - domyślny post submit
