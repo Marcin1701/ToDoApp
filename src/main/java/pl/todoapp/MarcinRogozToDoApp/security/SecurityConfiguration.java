@@ -19,7 +19,7 @@ class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
 
     // Wymagana jest rejestracja beana
     @Bean
-    KeycloakSpringBootConfigResolver keycloakSpringBootConfigResolver() {
+    KeycloakSpringBootConfigResolver keycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
 
@@ -59,7 +59,24 @@ class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/info/*") // Do czego mają dostęp
                 .hasRole("USER")    // Jaka rola
-                .anyRequest()   // reszta requestów
-                .permitAll();   // pozwalaj dalej
+                .anyRequest()       // reszta requestów
+                .permitAll();       // pozwalaj dalej
     }
+
+    // OAuth 2.0, JWT, OpenID
+    /*
+        Możemy zdelegować hasła i konta do facebooka.
+        Wysyłamy do facebooka zapytanie o użytkownika, dostajemy potwierdzenie informacji.
+
+        1. Jesteśmy uprawnieni do pewnych informacji dostępnych od providera Facebooka
+        2. Zewnętrzny dostarczyciel tożsamości potwierdza informacje
+        3. OAuth 2.0 - jest takim protokołem, keycloak wspiera tego typu protokoły
+        4. Jest OpenID connect - oprócz uprawnień, mamy konkretny adres dostarczyciela tożsamości,
+            skąd możemy pobrać dane
+        5. Format tokena z uprawnieniami to JWT - oauth 2 mocno czerpie z JWT, jest to kod szyfrowany, 3 części:
+            - nagłówek,
+            - informacje,
+            - podpis weryfikacyjny
+     */
+
 }
