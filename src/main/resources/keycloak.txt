@@ -1,0 +1,9 @@
+Username: admin
+Password: password
+
+Domyślnie keycloak uruchamia się na porcie 8080.
+Zmieniamy port!
+Polecenie:
+standalone.bat -Djboss.socket.binding.port-offset=100
+
+Aplikacja na porcie: 8180
