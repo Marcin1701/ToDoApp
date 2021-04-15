@@ -11,7 +11,7 @@ import java.time.ZoneId;
 // Będzie informowała o zdarzeniach
 
 @Entity
-@Table("task_event")
+@Table(name="task_events")
 class PersistedTaskEvent {
 
     @Id
