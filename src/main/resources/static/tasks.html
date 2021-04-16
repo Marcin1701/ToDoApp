@@ -22,6 +22,9 @@
     </fieldset>
 </main>
 <script>
+
+    let groupId;
+
     (async function() {
         // Znajdujemy main na stronie
         const main = document.querySelector('main');
@@ -31,6 +34,7 @@
         // Fetch to strzał do backendu - mini postman w przeglądarce
         // Akcja jest odroczona w czasie
         // Na każde odroczone w czasie zdarzenie - obietnica, promise - można zaczekać
+        groupId = params.get('group');
         const response = params.has('group') ? await fetch(`/groups/${params.get('group')}`) : await fetch('/tasks');
         if (response.ok) {  // Status z serii 200
             const tasks = await response.json();    // Format - JSON
@@ -47,19 +51,37 @@
             // i żeby poszedł POST
             // Zabiezpieczenie przed domyślnym proceosowaniem formularza
             event.preventDefault();
-            const resp = await fetch('/tasks', {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json',   // Wysyłamy JSON
-                    'Content-Type': 'application/json'  // Oczekujemy JSON
-                },
-                body: JSON.stringify({
-                    // DOM - każdy tag w html ma swoje odzwierciedlenie w obiekcie JS
-                    // Każdy formularz ma elements
-                    description: form.elements.description.value,
-                    deadline: form.elements.deadline.value && form.elements.deadline.value + ':00.000'
-                })
-            });
+            let resp;
+            if (groupId != null){
+                resp = await fetch('/tasks/' + groupId, {
+                    method: 'post',
+                    headers: {
+                        'Accept': 'application/json',   // Wysyłamy JSON
+                        'Content-Type': 'application/json'  // Oczekujemy JSON
+                    },
+                    body: JSON.stringify({
+                        // DOM - każdy tag w html ma swoje odzwierciedlenie w obiekcie JS
+                        // Każdy formularz ma elements
+                        description: form.elements.description.value,
+                        deadline: form.elements.deadline.value && form.elements.deadline.value + ':00.000'
+                    })
+                });
+            }
+            else {
+                resp = await fetch('/tasks', {
+                    method: 'post',
+                    headers: {
+                        'Accept': 'application/json',   // Wysyłamy JSON
+                        'Content-Type': 'application/json'  // Oczekujemy JSON
+                    },
+                    body: JSON.stringify({
+                        // DOM - każdy tag w html ma swoje odzwierciedlenie w obiekcie JS
+                        // Każdy formularz ma elements
+                        description: form.elements.description.value,
+                        deadline: form.elements.deadline.value && form.elements.deadline.value + ':00.000'
+                    })
+                });
+            }
             if (resp.ok){
                 // Ciało nowego taska
                 const taskFromServer = await resp.json();

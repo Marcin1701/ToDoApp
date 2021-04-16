@@ -1,17 +1,13 @@
 package pl.todoapp.MarcinRogozToDoApp.controller;
 
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 //import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import pl.todoapp.MarcinRogozToDoApp.logic.TaskGroupService;
 import pl.todoapp.MarcinRogozToDoApp.logic.TaskService;
 import pl.todoapp.MarcinRogozToDoApp.model.Task;
 //import pl.todoapp.MarcinRogozToDoApp.model.SqlTaskRepository;
@@ -44,6 +40,8 @@ class TaskController {
     // Spring nie wstrzykuje TaskRepository - tylko warstwę pośrednią
     private final TaskRepository repository;
 
+    private final TaskGroupService taskGroupService;
+
     // Obsługa zdarzeń w kontrolerze
     private final ApplicationEventPublisher eventPublisher;
 
@@ -62,8 +60,9 @@ class TaskController {
     // TaskController(@Qualifier("sqlTaskRepository") final TaskRepository repository)
     // Adnotacja @Lazy - bean ma być leniwie dodawany
     // Np repozytorium ma implementację i 1 zależy od 2 a 2 od 1, brzydkie obejście to dodanie @Lazy w 1 miejscu
-    TaskController(final TaskRepository repository, final ApplicationEventPublisher eventPublisher, final TaskService taskService) {
+    TaskController(final TaskRepository repository, final TaskGroupService taskGroupService, final ApplicationEventPublisher eventPublisher, final TaskService taskService) {
         this.repository = repository;
+        this.taskGroupService = taskGroupService;
         this.eventPublisher = eventPublisher;
         this.taskService = taskService;
     }
@@ -160,6 +159,14 @@ class TaskController {
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
+    @PostMapping("/{groupId}")
+    ResponseEntity<Task> createTask(@RequestBody @Valid Task toCreate, @PathVariable final Integer groupId){
+        logger.info("Post Method!");
+        taskGroupService.addTaskToGroup(toCreate, groupId);
+        Task result = repository.save(toCreate);
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
+    }
+
     // Metoda PUT
     // Zaznaczamy w springu {parametr} że będzie jakiś id w którym akualizujemy zadanie
     // Put da nam jako parametr nowego, zaktualizowanego taska
@@ -205,6 +212,22 @@ class TaskController {
         // throw new RuntimeException();
         return ResponseEntity.noContent().build();
     }
+
+    @Transactional
+    @PatchMapping("/{id}/{groupId}")
+    public ResponseEntity<?> toggleTask(@PathVariable("id") int id, @PathVariable("groupId") int groupId) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repository.findById(id)
+                .map(Task::toggle)
+                .ifPresent(eventPublisher::publishEvent);
+        // Jeśli nie zostanie zwrócony obiekt/zmienna to transakcja nie zostanie wykonana
+        // i zapisana w DB, np po rzuceniu wyjątku w tym miejscu (albo innym)
+        // throw new RuntimeException();
+        return ResponseEntity.noContent().build();
+    }
+
 
     // Transactional działa bo nie wywołuje bezpośrednio metody
     // Bezpośrednie wywołanie nie zadziała

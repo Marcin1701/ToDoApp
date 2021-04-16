@@ -115,6 +115,10 @@ public class Task {
         return group;
     }
 
+    public void setGroup(final TaskGroup group) {
+        this.group = group;
+    }
+
     // Kiedy zczytamy encję
     public void updateFrom(final Task source) {
         this.description = source.description;

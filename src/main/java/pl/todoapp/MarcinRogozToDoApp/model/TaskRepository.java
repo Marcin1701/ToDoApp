@@ -3,6 +3,7 @@ package pl.todoapp.MarcinRogozToDoApp.model;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
+import pl.todoapp.MarcinRogozToDoApp.model.Task;
 
 import java.util.List;
 import java.util.Optional;

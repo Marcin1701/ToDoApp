@@ -1,13 +1,6 @@
 package pl.todoapp.MarcinRogozToDoApp.logic;
 
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
-import pl.todoapp.MarcinRogozToDoApp.model.Project;
-import pl.todoapp.MarcinRogozToDoApp.model.TaskGroup;
-import pl.todoapp.MarcinRogozToDoApp.model.TaskGroupRepository;
-import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
+import pl.todoapp.MarcinRogozToDoApp.model.*;
 import pl.todoapp.MarcinRogozToDoApp.model.projection.GroupReadModel;
 import pl.todoapp.MarcinRogozToDoApp.model.projection.GroupWriteModel;
 
@@ -48,6 +41,15 @@ public class TaskGroupService {
         //TaskGroup result = repository.save(source.toGroup());
        // return new GroupReadModel(result);
         return createGroup(source, null);
+    }
+
+    public void addTaskToGroup(final Task task, int groupId){
+        var group = repository.findById(groupId);
+        if (group.isPresent()){
+            task.setGroup(group.get());
+            //group.get().getTasks().add(task);
+            repository.save(group.get());
+        }
     }
 
     public List<GroupReadModel> readAll() {

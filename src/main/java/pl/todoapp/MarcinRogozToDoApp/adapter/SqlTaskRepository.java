@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 import pl.todoapp.MarcinRogozToDoApp.model.Task;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskRepository;
 
-import java.util.List;
-
 // Klasa służy do komunikacji z bazą danych
 //     Jest to interfejs        Rozszerza             1. Jaka encja 2. Jaki typ klucza
 // Udostępnienie repozytorium
@@ -81,5 +79,4 @@ interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer>
     // HATEOS
     // Stan aplikacji reprezentowane poprzez hipermedia, informacje otrzymywane przez _ (podkreślenie)
     // Np. _links, _embedded
-
 }
