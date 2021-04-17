@@ -5,27 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo App</title>
-    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
-
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/indexStyle.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 </head>
 <body>
     <header>
         <p>
-            Doing all the things!
+            Organize your workflow!
         </p>
-        <nav>
-            <ul>
-                <li sec:authorize="hasRole('ADMIN')">
-                    <a href="/projects">Projekty</a>
-                </li>
-                <li>
-                    <a href="/groups">Grupy</a>
-                </li>
-                <li>
-                    <a href="/tasks.html">Zadania</a>
-                </li>
-            </ul>
-        </nav>
+        <div sec:authorize="hasRole('ADMIN')">
+            <a href="/projects">Projekty</a>
+        </div>
+        <div>
+            <a href="/groups">Grupy</a>
+        </div>
+       <div>
+            <a href="/tasks.html">Zadania</a>
+       </div>
     </header>
 </body>
 </html>
