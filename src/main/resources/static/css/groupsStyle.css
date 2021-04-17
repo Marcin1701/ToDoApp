@@ -1,0 +1,102 @@
+html {
+  color: silver;
+}
+
+body {
+  min-width: 0.2vw;
+  align-items: center;
+}
+
+.groupLogo {
+  letter-spacing: 5px;
+  text-align: center;
+  font-size: 8vh;
+}
+
+.taskDesc {
+  font-size: 3vh;
+}
+
+.groupDesc {
+  margin-left: 30%;
+  padding: 2%;
+}
+
+li {
+  margin-left: 30%;
+}
+
+fieldset {
+  text-align: center;
+  padding: 1%;
+  font-size: 5vh;
+  border-radius: 2vh;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10%;
+}
+
+.groupDescLabel {
+  font-size: 4vh;
+}
+
+dt {
+  font-size: 6vh;
+}
+
+input {
+  min-height: 5vh;
+  font-size: 5vh;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin-top: 4px;
+}
+
+.taskFieldset {
+  margin-top: 5%;
+  padding: 5%;
+  font-size: 3vh;
+}
+
+.errorForm {
+  margin-top: 0%;
+}
+
+button {
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 5vh;
+  color: white;
+  border-radius: 2vh;
+  padding: 1%;
+}
+
+.addTaskButton {
+  padding: 1%;
+  font-size: 3vh;
+}
+
+span {
+  color: white;
+  text-decoration: none;
+  font-size: 4vh;
+}
+
+span:hover {
+  color: silver;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+button:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: silver;
+}
+
+.taskGroupList:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: silver;
+}

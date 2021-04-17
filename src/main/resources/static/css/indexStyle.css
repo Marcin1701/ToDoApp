@@ -1,0 +1,19 @@
+div {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+a {
+  color: silver;
+  text-decoration: none;
+  font-size: 5vh;
+  border: 2px solid whitesmoke;
+  border-radius: 2vh;
+  padding: 20px;
+}
+
+a:hover {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px white;
+}

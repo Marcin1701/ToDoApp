@@ -1,0 +1,24 @@
+* {
+  font-family: Quicksand;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-height: 100%;
+  background: rgb(119, 161, 240);
+  background: linear-gradient(
+    33deg,
+    rgba(119, 161, 240, 1) 0%,
+    rgba(33, 52, 75, 1) 100%
+  );
+}
+
+p {
+  text-align: center;
+  font-weight: 800;
+  font-size: 8vh;
+  color: whitesmoke;
+  letter-spacing: 5px;
+}
