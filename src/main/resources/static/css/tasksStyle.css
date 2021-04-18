@@ -1,0 +1,24 @@
+fieldset {
+    text-align: center;
+    margin: auto;
+    padding: 4%;
+    font-size: 5vh;
+    border-radius: 2vh;
+    width: fit-content;
+
+}
+
+input {
+    min-height: 5vh;
+    font-size: 5vh;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.2);
+    margin-top: 4px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.descriptionText {
+    font-size: 6vh;
+    color: silver;
+}
