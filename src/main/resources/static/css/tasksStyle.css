@@ -1,10 +1,19 @@
+body {
+    background: rgb(119, 161, 240);
+    background: linear-gradient(
+            33deg,
+            rgba(119, 161, 240, 1) 0%,
+            rgba(33, 52, 75, 1) 100%
+    );
+}
+
 fieldset {
     text-align: center;
     margin: auto;
     padding: 4%;
     font-size: 5vh;
-    border-radius: 2vh;
-    width: fit-content;
+    border-radius: 4vh;
+    width: 30%;
 
 }
 
@@ -21,4 +30,24 @@ input {
 .descriptionText {
     font-size: 6vh;
     color: silver;
+}
+
+.dateStyle {
+    
+}
+
+button {
+  color: black;
+  text-decoration: none;
+  font-size: 3vh;
+  border: 2px solid whitesmoke;
+  border-radius: 3vh;
+  padding: 5px;
+
+}
+
+button:hover {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px white;
 }
