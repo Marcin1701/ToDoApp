@@ -1,4 +1,4 @@
-# MarcinRogoz-ToDoApp
+# ToDo List
 Create your own tasks, projects.
 This is my traning repository where I add and test different Spring technologies and options.
 
