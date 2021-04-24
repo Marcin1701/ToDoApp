@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo App: groups</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/groupsStyle.css">
+    <title>ToDo List: Groups</title>
+    <link rel="stylesheet" href="..css/style.css">
+    <link rel="stylesheet" href="..css/groupsStyle.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 
 </head>
@@ -20,6 +20,7 @@
         <form action="#" method="post" th:action="@{/groups}" th:object="${group}">
             <p class="errorForm" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
             <label class="groupDescLabel">Description of your new group:
+                <br>
                 <input type="text" th:field="*{description}" th:errorclass="'Bdc(red)'" />
             </label>
             <fieldset class="taskFieldset" th:each="task,taskStat : *{tasks}">

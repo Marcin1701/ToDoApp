@@ -1,4 +1,4 @@
-body {
+html {
     background: rgb(119, 161, 240);
     background: linear-gradient(
             33deg,
@@ -30,10 +30,6 @@ input {
 .descriptionText {
     font-size: 6vh;
     color: silver;
-}
-
-.dateStyle {
-    
 }
 
 button {

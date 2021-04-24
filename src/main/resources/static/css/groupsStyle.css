@@ -2,7 +2,7 @@ html {
   color: silver;
 }
 
-body {
+html, body {
   min-width: 0.2vw;
   align-items: center;
   background: rgb(119, 161, 240);
@@ -16,7 +16,7 @@ body {
 .groupLogo {
   letter-spacing: 5px;
   text-align: center;
-  font-size: 8vh;
+  font-size: 6vh;
 }
 
 .taskDesc {
@@ -25,6 +25,7 @@ body {
 
 .groupDesc {
   margin-left: 30%;
+  margin-bottom: 1%;
   padding: 2%;
 }
 
@@ -34,18 +35,17 @@ li {
 
 fieldset {
   text-align: center;
-  padding: 1%;
-  font-size: 3vh;
+  padding: 2%;
+  font-size: 5vh;
   border-radius: 1vh;
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 5%;
-  ;
+  margin-bottom: 0%;
 }
 
 .groupDescLabel {
-  font-size: 4vh;
+  font-size: 3vh;
 }
 
 dt {
