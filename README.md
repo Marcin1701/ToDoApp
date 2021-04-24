@@ -1,9 +1,9 @@
-# MarcinRogoz-ToDoApp
+# ToDo List
 Create your own tasks, projects.
 This is my traning repository where I add and test different Spring technologies and options.
 
 # Technologies
-* Spring, Spring Boot, Web, Security
+* Spring, Boot, Web, MVC, Security
 * Thymeleaf
 * H2
 * JUnit
