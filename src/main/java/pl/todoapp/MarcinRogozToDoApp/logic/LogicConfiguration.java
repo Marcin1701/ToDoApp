@@ -2,6 +2,8 @@ package pl.todoapp.MarcinRogozToDoApp.logic;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.todoapp.MarcinRogozToDoApp.TaskConfigurationProperties;
 import pl.todoapp.MarcinRogozToDoApp.model.ProjectRepository;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroupRepository;
@@ -32,6 +34,11 @@ class LogicConfiguration {
                                       final TaskRepository taskRepository)
     {
         return new TaskGroupService(repository, taskRepository);
+    }
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }
