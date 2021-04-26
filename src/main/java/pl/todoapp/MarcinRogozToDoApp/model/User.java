@@ -23,6 +23,12 @@ public class User {
 
     public User() {}
 
+    public User(String email, String password, Set<TaskGroup> taskGroups) {
+        this.email = email;
+        this.password = password;
+        this.taskGroups = taskGroups;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -1,5 +1,7 @@
 package pl.todoapp.MarcinRogozToDoApp.model;
 
+import pl.todoapp.MarcinRogozToDoApp.model.projection.GroupWriteModel;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -49,6 +51,18 @@ public class TaskGroup {
     private User user;
 
     public TaskGroup() {
+    }
+
+    public TaskGroup(TaskGroup taskGroup) {
+        this.description = taskGroup.getDescription();;
+        this.done = taskGroup.isDone();
+        this.id = taskGroup.id;
+        this.tasks = taskGroup.getTasks();
+        this.project = taskGroup.getProject();
+        this.user = taskGroup.user;
+    }
+
+    public TaskGroup(final GroupWriteModel groupWriteModel) {
     }
 
     public int getId() {

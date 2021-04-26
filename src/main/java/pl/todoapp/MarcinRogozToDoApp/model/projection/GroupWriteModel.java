@@ -1,6 +1,7 @@
 package pl.todoapp.MarcinRogozToDoApp.model.projection;
 
 import pl.todoapp.MarcinRogozToDoApp.model.Project;
+import pl.todoapp.MarcinRogozToDoApp.model.Task;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroup;
 
 import javax.validation.Valid;
@@ -22,6 +23,14 @@ public class GroupWriteModel {
     public GroupWriteModel() {
         // Pusty task do renderowania pola formularza
         tasks.add(new GroupTaskWriteModel());
+    }
+
+    public GroupWriteModel(TaskGroup taskGroup) {
+        this.description = taskGroup.getDescription();
+        this.tasks = taskGroup.getTasks()
+                .stream()
+                .map(GroupTaskWriteModel::new)
+                .collect(Collectors.toList());
     }
 
     public String getDescription() {
@@ -51,4 +60,6 @@ public class GroupWriteModel {
         result.setProject(project);
         return result;
     }
+
+
 }

@@ -61,7 +61,7 @@ public class Task {
     @JoinColumn(name = "task_group_id")
     private TaskGroup group;
 
-    Task() {
+    public Task() {
     }
 
     // Konstruktor z grupą
@@ -75,6 +75,15 @@ public class Task {
         if (group != null){
             this.group = group;
         }
+    }
+
+    public Task(final Task task) {
+        this.deadline = task.deadline;
+        this.done = task.done;
+        this.group = task.group;
+        this.audit = task.audit;
+        this.id = task.id;
+        this.description = task.description;
     }
 
     public int getId() {

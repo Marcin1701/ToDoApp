@@ -18,6 +18,13 @@ public class GroupTaskWriteModel {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime deadline;
 
+    public GroupTaskWriteModel() {}
+
+    public GroupTaskWriteModel(Task task) {
+        this.description = task.getDescription();
+        this.deadline = task.getDeadline();
+    }
+
     public String getDescription() {
         return description;
     }
