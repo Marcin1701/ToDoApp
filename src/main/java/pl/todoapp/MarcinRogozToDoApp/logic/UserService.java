@@ -15,7 +15,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    UserReadModel findUserInDatabase(UserReadModel userReadModel) {
+    public UserReadModel findUserInDatabase(UserReadModel userReadModel) {
         var user = userRepository.findByEmail(userReadModel.getEmail());
         if (user != null) {
             return new UserReadModel(userRepository.findByEmail(userReadModel.getEmail()));
@@ -23,7 +23,7 @@ public class UserService {
         throw new UsernameNotFoundException("User " + userReadModel.getEmail() + " not found!");
     }
 
-    UserReadModel saveUserInDatabase(UserWriteModel userWriteMode) {
+    public UserReadModel saveUserInDatabase(UserWriteModel userWriteMode) {
         return new UserReadModel(userRepository.save(userWriteMode.toEntity()));
     }
 

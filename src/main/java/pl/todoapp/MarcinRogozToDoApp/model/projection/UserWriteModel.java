@@ -3,6 +3,7 @@ package pl.todoapp.MarcinRogozToDoApp.model.projection;
 import pl.todoapp.MarcinRogozToDoApp.model.TaskGroup;
 import pl.todoapp.MarcinRogozToDoApp.model.User;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,10 @@ public class UserWriteModel {
     }
 
     public User toEntity() {
+        // Zabezpieczenie przed nullpointerexception
+        if (groups == null) {
+            groups = new HashSet<>();
+        }
         return new User(email, password, groups.stream().map(TaskGroup::new).collect(Collectors.toSet()));
     }
 }
