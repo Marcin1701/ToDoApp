@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
@@ -22,6 +24,10 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 // Adnotacja do keycloak - konfiguracja
 @KeycloakConfiguration              // Rozszerza klasę - mówi o tym jak użytkownik powinien logować się
 class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
+
+    @Bean
+    public PasswordEncoder encoder() { return new BCryptPasswordEncoder();
+    }
 
     // Wymagana jest rejestracja beana
     @Bean

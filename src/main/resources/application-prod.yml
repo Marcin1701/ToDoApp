@@ -6,3 +6,4 @@ spring:
   jpa:
     hibernate:
       ddl-auto: 'create'
+password-hash.template.allowPasswordHash: true

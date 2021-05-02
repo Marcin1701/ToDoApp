@@ -36,9 +36,4 @@ class LogicConfiguration {
         return new TaskGroupService(repository, taskRepository);
     }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 }

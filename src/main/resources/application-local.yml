@@ -13,6 +13,7 @@ management:
       exposure:
         include: '*'
 task.template.allowMultipleTasks: false
+password-hash.template.allowPasswordHash: false
 keycloak:
   auth-server-url: 'http://localhost:8180/auth' # Adres keycloak
   # Obszar keycloak
