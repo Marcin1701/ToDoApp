@@ -2,6 +2,7 @@ package pl.todoapp.MarcinRogozToDoApp.controller;
 
 // Testy integracyjne
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 // Lekki test integracyjny
 // Podpinamy nasz kontroler
+@Disabled
 @WebMvcTest(TaskController.class)
 public class TaskControllerLightIntegrationTest {
 
