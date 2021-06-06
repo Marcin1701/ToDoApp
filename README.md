@@ -10,3 +10,4 @@ This is my traning repository where I add and test different Spring technologies
 * Mockito
 * Flyway
 * KeyCloak
+* Github Actions, Circle CI
