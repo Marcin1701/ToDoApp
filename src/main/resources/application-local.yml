@@ -3,7 +3,7 @@ spring:
     enabled: true
     path: '/console'
   datasource:
-    url: 'jdbc:h2:file:D:/Programowanie/Java/[Spring][IntelliJ][Kurs]Udemy/MarcinRogoz-ToDoApp/todo-db'
+    url: 'jdbc:h2:file:~/Repozytoria/ToDoApp/ToDoApp.db'
   jpa:
     hibernate:
       ddl-auto: validate
